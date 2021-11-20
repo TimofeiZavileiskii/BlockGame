@@ -22,14 +22,15 @@ void DataManager::AddShaders()
 void DataManager::AddMeshes() 
 {
     float vertices[] = {
-    -0.5f, -0.5f, -0.5f, //Back left bottom
-     0.5f, -0.5f, -0.5f, //Back right bottom
-    -0.5f,  0.5f, -0.5f, //Back left top
-     0.5f,  0.5f, -0.5f, //Back right top
-    -0.5f, -0.5f,  0.5f, //Front left bottom
-     0.5f, -0.5f,  0.5f, //Front right bottom
-    -0.5f,  0.5f,  0.5f, //Front left top
-     0.5f,  0.5f,  0.5f  //Front right top
+    2.0f, 5.0f, -15.0f, //Back left bottom
+    -1.5f, -2.2f, -2.5f, //Back right bottom
+    -3.8f, -2.0f, -12.3f, //Back left top
+    2.4f, -0.4f, -3.5f, //Back right top
+    -1.7f, 3.0f, -7.5f, //Front left bottom
+    1.3f, -2.0f, -2.5f, //Front right bottom
+    1.5f, 2.0f, -2.5f, //Front left top
+    1.5f, 0.2f, -1.5f, //Front right top
+    -1.3f, 1.0f, -1.5f 
     };
 
     unsigned int indices[] = {
