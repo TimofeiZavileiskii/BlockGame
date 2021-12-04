@@ -17,10 +17,10 @@ private:
 	{
 		while (!end)
 		{
-			window->ProcessInputs();
+			window->ProcessEvents();
 			
 			world->Update();
-			renderer->Draw();
+			renderer->Draw(world->GetCamera());
 
 			window->Update();
 
@@ -39,7 +39,7 @@ public:
 
 		window = new Window(width, height, "Game");
 		renderer = new Renderer(width, height);
-		world = new World();
+		world = new World(window);
 	}
 
 	void StartLoop() 

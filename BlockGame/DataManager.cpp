@@ -4,12 +4,15 @@ void DataManager::AddShaders()
 {
     const char* sourceVert = "#version 460 core\n"
     "layout (location = 0) in vec3 aPos;\n"
+    "uniform mat4 model;\n"
+    "uniform mat4 view;\n"
+    "uniform mat4 projection;\n"
     "void main()\n"
     "{\n"
-    "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+    "   gl_Position = projection * view * model * vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
     "}\0";
 
-    const char* sourceFrag = "#version 330 core\n"
+    const char* sourceFrag = "#version 460 core\n"
         "out vec4 FragColor;\n"
         "void main()\n"
         "{\n"
@@ -22,30 +25,62 @@ void DataManager::AddShaders()
 void DataManager::AddMeshes() 
 {
     float vertices[] = {
-    2.0f, 5.0f, -15.0f, //Back left bottom
-    -1.5f, -2.2f, -2.5f, //Back right bottom
-    -3.8f, -2.0f, -12.3f, //Back left top
-    2.4f, -0.4f, -3.5f, //Back right top
-    -1.7f, 3.0f, -7.5f, //Front left bottom
-    1.3f, -2.0f, -2.5f, //Front right bottom
-    1.5f, 2.0f, -2.5f, //Front left top
-    1.5f, 0.2f, -1.5f, //Front right top
-    -1.3f, 1.0f, -1.5f 
+        -0.5f, -0.5f, -0.5f,
+         0.5f, -0.5f, -0.5f,
+         0.5f,  0.5f, -0.5f,
+         0.5f,  0.5f, -0.5f,
+        -0.5f,  0.5f, -0.5f,
+        -0.5f, -0.5f, -0.5f,
+                            
+        -0.5f, -0.5f,  0.5f,
+         0.5f, -0.5f,  0.5f,
+         0.5f,  0.5f,  0.5f,
+         0.5f,  0.5f,  0.5f,
+        -0.5f,  0.5f,  0.5f,
+        -0.5f, -0.5f,  0.5f,
+                            
+        -0.5f,  0.5f,  0.5f,
+        -0.5f,  0.5f, -0.5f,
+        -0.5f, -0.5f, -0.5f,
+        -0.5f, -0.5f, -0.5f,
+        -0.5f, -0.5f,  0.5f,
+        -0.5f,  0.5f,  0.5f,
+                            
+         0.5f,  0.5f,  0.5f,
+         0.5f,  0.5f, -0.5f,
+         0.5f, -0.5f, -0.5f,
+         0.5f, -0.5f, -0.5f,
+         0.5f, -0.5f,  0.5f,
+         0.5f,  0.5f,  0.5f,
+                            
+        -0.5f, -0.5f, -0.5f,
+         0.5f, -0.5f, -0.5f,
+         0.5f, -0.5f,  0.5f,
+         0.5f, -0.5f,  0.5f,
+        -0.5f, -0.5f,  0.5f,
+        -0.5f, -0.5f, -0.5f,
+                            
+        -0.5f,  0.5f, -0.5f,
+         0.5f,  0.5f, -0.5f,
+         0.5f,  0.5f,  0.5f,
+         0.5f,  0.5f,  0.5f,
+        -0.5f,  0.5f,  0.5f,
+        -0.5f,  0.5f, -0.5f,
     };
 
     unsigned int indices[] = {
-        0, 1, 3, //Back
-        1, 2, 3,
-        2, 6, 0, //Left
-        4, 6, 0,
-        6, 3, 2, //Top
-        6, 3, 7,
-        7, 1, 3, //Right
-        7, 1, 5,
-        4, 7, 5, //Front
-        4, 7, 6,
-        0, 5, 1, //Bottom
-        0, 5, 4,
+        0, 1, 2,
+        3, 4, 5,
+        6, 7, 8,
+        9, 10, 11,
+        12, 13, 14,
+        15, 16, 17,
+        18, 19, 20,
+        21, 22, 23,
+        24, 25, 26,
+        27, 28, 29,
+        30, 31, 32,
+        33, 34, 35,
     };
 
     Indicies indicesObj = Indicies(indices, 36);

@@ -49,12 +49,46 @@ InputManager::InputManager(GLFWwindow* inWindow)
 	glfwKeys[CTRL] = GLFW_KEY_LEFT_CONTROL;
 	glfwKeys[CAPS_LOCK] = GLFW_KEY_CAPS_LOCK;
 	glfwKeys[TAB] = GLFW_KEY_TAB;
+
+	glfwKeys[LEFT_MOUSE] = GLFW_MOUSE_BUTTON_1;
+	glfwKeys[RIGHT_MOUSE] = GLFW_MOUSE_BUTTON_2;
 }
 
 bool InputManager::GetInput(KeyCodes checkedKey)
 {
 	int glfwKey = glfwKeys[checkedKey];
-	bool output = (glfwGetKey(window, glfwKey) == GLFW_PRESS);
+	bool output;
+
+	if (checkedKey < LEFT_MOUSE) 
+	{
+		output = (glfwGetKey(window, glfwKey) == GLFW_PRESS);
+	}
+	else 
+	{
+		output = (glfwGetMouseButton(window, glfwKey) == GLFW_PRESS);
+	}
 
 	return output;
+}
+
+void InputManager::UpdateCursorPos() 
+{
+	double PosX, PosY;
+
+	glfwGetCursorPos(window, &PosX, &PosY);
+
+
+	CursorOffset = glm::dvec2(1000 / 2 - CursorPos.x, 850 / 2 - CursorPos.y);
+	glfwSetCursorPos(window, 1000 / 2, 850 /2);
+	CursorPos = glm::dvec2(PosX, PosY);
+}
+
+glm::dvec2 InputManager::GetCursorPosition() 
+{
+	return CursorPos;
+}
+
+glm::dvec2 InputManager::GetCursorOffset() 
+{
+	return CursorOffset;
 }

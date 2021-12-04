@@ -1,5 +1,6 @@
 #pragma once
 #include <glfw3.h>
+#include <glm/vec2.hpp>
 
 enum KeyCodes
 {
@@ -8,6 +9,7 @@ enum KeyCodes
 	C, V, B, N, M,
 	_1, _2, _3, _4, _5, _6, _7, _8, _9, _0,
 	ESC, SHIFT, CTRL, CAPS_LOCK, TAB,
+	LEFT_MOUSE, RIGHT_MOUSE,
 	NUMBER_OF_KEY_CODES
 };
 
@@ -16,10 +18,18 @@ class InputManager
 	GLFWwindow* window;
 	int* glfwKeys;
 
+	glm::dvec2 CursorPos;
+	glm::dvec2 CursorOffset;
+
 public:
 	InputManager(GLFWwindow* inWindow);
 	
 	bool GetInput(KeyCodes checkedKey);
 
+	void UpdateCursorPos();
+
+	glm::dvec2 GetCursorPosition();
+
+	glm::dvec2 GetCursorOffset();
 };
 

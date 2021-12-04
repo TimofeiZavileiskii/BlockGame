@@ -1,7 +1,9 @@
 #pragma once
 #include <glad/glad.h>
+#include <glm/gtc/matrix_transform.hpp>
 #include "DataManager.h"
 #include "ErrorLoger.h"
+#include "Camera.h"
 
 class Renderer
 {
@@ -11,11 +13,16 @@ private:
 
 	std::string errorTitle;
 
+	int width;
+	int height;
+
 	void ProcessErrors();
 
-public:
-	Renderer(int width, int height);
+	void ProcessErrors(std::string error);
 
-	void Draw();
+public:
+	Renderer(int inWidth, int inHeight);
+
+	void Draw(Camera* camera);
 };
 

@@ -1,93 +1,128 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
+    <Filter Include="Window">
+      <UniqueIdentifier>{caee4b1d-0f55-4408-9752-d1139f71699f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderer">
+      <UniqueIdentifier>{5f604f15-da86-4595-ab9c-ca038c134985}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="World">
+      <UniqueIdentifier>{9e54e892-6112-4401-8efd-a845209ef444}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderer\Source Files">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Header Files">
+    <Filter Include="Renderer\Header Files">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="World\Header Files">
+      <UniqueIdentifier>{8dfb1719-40f4-4774-b7b2-e2546a18a128}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="World\Source Files">
+      <UniqueIdentifier>{122aa559-ec89-4c9a-a38e-6eb61bc69a7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Window\Header Files">
+      <UniqueIdentifier>{a219ce5c-da5b-4bd4-97c5-811534b93b62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Window\Source Files">
+      <UniqueIdentifier>{64ed9af5-a855-48f7-97f7-5d96c3936b80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Includes">
+      <UniqueIdentifier>{70d3d40d-3675-4ab3-87aa-804ed56549dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Other">
+      <UniqueIdentifier>{2ca62593-c6ca-4713-afe5-ba687be6e819}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BlockGame.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="glad.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Mesh.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Shader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DataManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Vertecies.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Renderer\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Indicies.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Renderer\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Renderer\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Window.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Renderer\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Renderer\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Vertecies.cpp">
+      <Filter>Renderer\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="World.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>World\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ErrorLoger.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Window.cpp">
+      <Filter>Window\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="InputManager.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Window\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="glad.c">
+      <Filter>Includes</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Other</Filter>
+    </ClCompile>
+    <ClCompile Include="BlockGame.cpp">
+      <Filter>Other</Filter>
+    </ClCompile>
+    <ClCompile Include="ErrorLoger.cpp">
+      <Filter>Other</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>World\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>World\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Renderer.h">
-      <Filter>Header Files</Filter>
+      <Filter>Renderer\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Mesh.h">
-      <Filter>Header Files</Filter>
+      <Filter>Renderer\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Shader.h">
-      <Filter>Header Files</Filter>
+      <Filter>Renderer\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DataManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Vertecies.h">
-      <Filter>Header Files</Filter>
+      <Filter>Renderer\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Indicies.h">
-      <Filter>Header Files</Filter>
+      <Filter>Renderer\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Window.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Vertecies.h">
+      <Filter>Renderer\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="World.h">
-      <Filter>Header Files</Filter>
+      <Filter>World\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ErrorLoger.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Window.h">
+      <Filter>Window\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="InputManager.h">
-      <Filter>Header Files</Filter>
+      <Filter>Window\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="ErrorLoger.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>World\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>World\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

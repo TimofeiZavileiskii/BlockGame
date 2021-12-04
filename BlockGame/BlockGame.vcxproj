@@ -152,7 +152,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BlockGame.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DataManager.cpp" />
+    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="ErrorLoger.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="glad.c" />
@@ -166,7 +168,9 @@
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="DataManager.h" />
+    <ClInclude Include="Entity.h" />
     <ClInclude Include="ErrorLoger.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Indicies.h" />

@@ -1,8 +1,11 @@
 #include "Renderer.h"
 
-Renderer::Renderer(int width, int height) 
+
+Renderer::Renderer(int inWidth, int inHeight) 
 {
     errorTitle = "Renderer";
+    width = inWidth;
+    height = inHeight;
 
     errorLoger = errorLoger->instance();
 
@@ -38,13 +41,28 @@ void Renderer::ProcessErrors()
     }
 }
 
-void Renderer::Draw() 
+void Renderer::ProcessErrors(std::string error)
+{
+    GLenum errorCode;
+    while ((errorCode = glGetError()) != GL_NO_ERROR)
+    {
+        errorLoger->PushError(errorTitle, error);
+    }
+}
+
+void Renderer::Draw(Camera* camera) 
 {
     glClear(GL_COLOR_BUFFER_BIT);
-    dataManager->GetMesh("test")->Bind();
-    dataManager->GetShader("test")->Bind();
-   
 
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    dataManager->GetMesh("test")->Bind();
+    
+    Shader* shader = dataManager->GetShader("test");
+    shader->Bind();
+    shader->SetUniformMatf4("model", glm::translate(glm::mat4(0.4f), glm::vec3(0.4f, 0.4f, 0.0f)));
+    shader->SetUniformMatf4("view", camera->GetViewMatrix());
+    shader->SetUniformMatf4("projection", camera->GetPerspectiveMatrix());
+
+    glDrawElements(GL_TRIANGLES, 48, GL_UNSIGNED_INT, 0);
+
     ProcessErrors();
 }

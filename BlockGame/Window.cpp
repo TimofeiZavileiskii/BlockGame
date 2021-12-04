@@ -32,9 +32,23 @@ Window::~Window()
     glfwTerminate();
 }
 
-void Window::ProcessInputs() 
+void Window::ProcessEvents() 
 {
     glfwPollEvents();
+
+    inputManager->UpdateCursorPos();
+    UpdateTime();
+}
+
+void Window::UpdateTime() 
+{
+    passedTime = glfwGetTime();
+    glfwSetTime(0);
+}
+
+glm::dvec2 Window::GetCursorOffset()
+{
+    return inputManager->GetCursorOffset();
 }
 
 void Window::Update() 
@@ -45,4 +59,14 @@ void Window::Update()
 bool Window::GetInput(KeyCodes key)
 {
     return inputManager->GetInput(key);
+}
+
+float Window::GetAspectRation()
+{
+    return (float)width / (float)height;
+}
+
+double Window::GetTime() 
+{
+    return passedTime;
 }
