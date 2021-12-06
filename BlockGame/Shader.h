@@ -12,7 +12,7 @@ private:
 public:
 	Shader(const char* vertexShader, const char* fragmentShader);
 
-	void Bind();
+	void Bind() const;
 
 	void SetUniformMatf4(std::string name, glm::mat4 matrix);
 };

@@ -1,6 +1,5 @@
 #include "Renderer.h"
 
-
 Renderer::Renderer(int inWidth, int inHeight) 
 {
     errorTitle = "Renderer";
@@ -38,6 +37,7 @@ void Renderer::ProcessErrors()
         }
 
         errorLoger->PushError(errorTitle, error);
+        std::cout << ((int)errorCode) << "\n";
     }
 }
 
@@ -54,15 +54,15 @@ void Renderer::Draw(Camera* camera)
 {
     glClear(GL_COLOR_BUFFER_BIT);
 
-    dataManager->GetMesh("test")->Bind();
+    dataManager->GetMesh("Test")->Bind();
     
-    Shader* shader = dataManager->GetShader("test");
+    Shader* shader = dataManager->GetShader("Test");
     shader->Bind();
     shader->SetUniformMatf4("model", glm::translate(glm::mat4(0.4f), glm::vec3(0.4f, 0.4f, 0.0f)));
     shader->SetUniformMatf4("view", camera->GetViewMatrix());
     shader->SetUniformMatf4("projection", camera->GetPerspectiveMatrix());
 
-    glDrawElements(GL_TRIANGLES, 48, GL_UNSIGNED_INT, 0);
+    glDrawArrays(GL_TRIANGLES, 0, 36);
 
     ProcessErrors();
 }

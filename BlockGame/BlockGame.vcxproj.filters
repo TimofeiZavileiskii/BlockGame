@@ -36,24 +36,18 @@
     <Filter Include="Other">
       <UniqueIdentifier>{2ca62593-c6ca-4713-afe5-ba687be6e819}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{3dc8e42b-1e12-49fb-b3b0-2529a3151176}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DataManager.cpp">
-      <Filter>Renderer\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Indicies.cpp">
-      <Filter>Renderer\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Mesh.cpp">
       <Filter>Renderer\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Renderer.cpp">
       <Filter>Renderer\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Shader.cpp">
-      <Filter>Renderer\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Vertecies.cpp">
       <Filter>Renderer\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="World.cpp">
@@ -83,24 +77,27 @@
     <ClCompile Include="Camera.cpp">
       <Filter>World\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="VBO.cpp">
+      <Filter>Renderer\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EBO.cpp">
+      <Filter>Renderer\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VAO.cpp">
+      <Filter>Renderer\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Renderer\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Renderer.h">
-      <Filter>Renderer\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Mesh.h">
       <Filter>Renderer\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Shader.h">
       <Filter>Renderer\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DataManager.h">
-      <Filter>Renderer\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Indicies.h">
-      <Filter>Renderer\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Vertecies.h">
       <Filter>Renderer\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="World.h">
@@ -124,5 +121,25 @@
     <ClInclude Include="Camera.h">
       <Filter>World\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="VBO.h">
+      <Filter>Renderer\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EBO.h">
+      <Filter>Renderer\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VAO.h">
+      <Filter>Renderer\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Renderer\Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Data\Shaders\Test\Test.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Data\Shaders\Test\Test.vert">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

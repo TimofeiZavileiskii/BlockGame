@@ -1,6 +1,8 @@
 #pragma once
 #include <glad/glad.h>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glfw3.h>
+
 #include "DataManager.h"
 #include "ErrorLoger.h"
 #include "Camera.h"

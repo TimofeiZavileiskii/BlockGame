@@ -1,10 +1,14 @@
 #include "InputManager.h"
 
 
-InputManager::InputManager(GLFWwindow* inWindow)
+InputManager::InputManager(GLFWwindow* inWindow, int width, int height)
 {
 	window = inWindow;
-	
+
+	windowWidth = width;
+	windowHeight = height;
+
+
 	//I know it is horrible
 	glfwKeys = new int[NUMBER_OF_KEY_CODES];
 
@@ -78,8 +82,8 @@ void InputManager::UpdateCursorPos()
 	glfwGetCursorPos(window, &PosX, &PosY);
 
 
-	CursorOffset = glm::dvec2(1000 / 2 - CursorPos.x, 850 / 2 - CursorPos.y);
-	glfwSetCursorPos(window, 1000 / 2, 850 /2);
+	CursorOffset = glm::dvec2(windowWidth / 2 - CursorPos.x, windowHeight / 2 - CursorPos.y);
+	glfwSetCursorPos(window, windowWidth / 2, windowHeight /2);
 	CursorPos = glm::dvec2(PosX, PosY);
 }
 

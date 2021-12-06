@@ -20,7 +20,7 @@ Shader::Shader(const char* vertShaderSource, const char* fragShaderSource)
 }
 
 
-void Shader::Bind() 
+void Shader::Bind() const
 {
     glUseProgram(ID);
 }

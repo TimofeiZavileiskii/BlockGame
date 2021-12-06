@@ -158,12 +158,13 @@
     <ClCompile Include="ErrorLoger.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="glad.c" />
-    <ClCompile Include="Indicies.cpp" />
+    <ClCompile Include="EBO.cpp" />
     <ClCompile Include="InputManager.cpp" />
-    <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="Model.cpp" />
+    <ClCompile Include="VAO.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Shader.cpp" />
-    <ClCompile Include="Vertecies.cpp" />
+    <ClCompile Include="VBO.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
@@ -173,14 +174,19 @@
     <ClInclude Include="Entity.h" />
     <ClInclude Include="ErrorLoger.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="Indicies.h" />
+    <ClInclude Include="EBO.h" />
     <ClInclude Include="InputManager.h" />
-    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="Model.h" />
+    <ClInclude Include="VAO.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Shader.h" />
-    <ClInclude Include="Vertecies.h" />
+    <ClInclude Include="VBO.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="World.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Data\Shaders\Test\Test.frag" />
+    <None Include="Data\Shaders\Test\Test.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

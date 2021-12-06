@@ -17,12 +17,14 @@ class InputManager
 {
 	GLFWwindow* window;
 	int* glfwKeys;
+	int windowWidth;
+	int windowHeight;
 
 	glm::dvec2 CursorPos;
 	glm::dvec2 CursorOffset;
 
 public:
-	InputManager(GLFWwindow* inWindow);
+	InputManager(GLFWwindow* inWindow, int width, int height);
 	
 	bool GetInput(KeyCodes checkedKey);
 

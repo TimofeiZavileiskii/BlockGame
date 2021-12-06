@@ -2,24 +2,18 @@
 
 void DataManager::AddShaders() 
 {
-    const char* sourceVert = "#version 460 core\n"
-    "layout (location = 0) in vec3 aPos;\n"
-    "uniform mat4 model;\n"
-    "uniform mat4 view;\n"
-    "uniform mat4 projection;\n"
-    "void main()\n"
-    "{\n"
-    "   gl_Position = projection * view * model * vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-    "}\0";
+    shaders["Test"] = ReadShader("Test");
+}
 
-    const char* sourceFrag = "#version 460 core\n"
-        "out vec4 FragColor;\n"
-        "void main()\n"
-        "{\n"
-        "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-        "}\n\0";
+Shader* DataManager::ReadShader(std::string shaderName) 
+{
+    std::ifstream vertShader("Data/Shaders/" + shaderName + "/" + shaderName + ".vert");
+    std::ifstream fragShader("Data/Shaders/" + shaderName + "/" + shaderName + ".frag");
 
-    shaders["test"] = new Shader(sourceVert, sourceFrag);
+    std::string vertText(std::istreambuf_iterator<char>{vertShader}, {});
+    std::string fragText(std::istreambuf_iterator<char>{fragShader}, {});
+
+    return new Shader(vertText.c_str(), fragText.c_str());
 }
 
 void DataManager::AddMeshes() 
@@ -83,11 +77,13 @@ void DataManager::AddMeshes()
         33, 34, 35,
     };
 
-    Indicies indicesObj = Indicies(indices, 36);
+    EBO* indicesObj = new EBO(indices, 36);
 
-    Vertecies verts = Vertecies(vertices, 8, 3);
+    VBO* verts = new VBO(vertices, 36, 3);
 
-    meshes["test"] = new Mesh(verts, indicesObj);
+    std::vector<VaoLayoutElement> layout = std::vector<VaoLayoutElement>();
+    layout.push_back(VaoLayoutElement(FLOAT, 3, false));
+    meshes["Test"] = new Model(new VAO(verts, layout), indicesObj);
 }
 
 Shader* DataManager::GetShader(std::string name) 
@@ -95,7 +91,7 @@ Shader* DataManager::GetShader(std::string name)
 	return shaders[name];
 }
 
-Mesh* DataManager::GetMesh(std::string name)
+Model* DataManager::GetMesh(std::string name)
 {
 	return meshes[name];
 }
@@ -103,5 +99,6 @@ Mesh* DataManager::GetMesh(std::string name)
 DataManager::DataManager() 
 {
     AddMeshes();
+
     AddShaders();
 }

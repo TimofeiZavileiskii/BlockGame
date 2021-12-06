@@ -24,7 +24,7 @@ Window::Window(int inWidth, int inHeight, std::string inTitle)
 
         glfwMakeContextCurrent(window);
 
-        inputManager = new InputManager(window);
+        inputManager = new InputManager(window, width, height);
 }
 
 Window::~Window()

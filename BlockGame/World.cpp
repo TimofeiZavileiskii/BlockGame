@@ -2,7 +2,7 @@
 
 void World::UpdateCamera()
 {
-	float rotationSpeed = 20.0f * window->GetTime();
+	float rotationSpeed = 50.0f * window->GetTime();
 	glm::vec2 offset = window->GetCursorOffset();
 	camera->Rotate(glm::vec2(offset.x *= rotationSpeed, offset.y *= rotationSpeed));
 
