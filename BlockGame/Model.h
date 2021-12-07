@@ -1,6 +1,7 @@
 #pragma once
 #include "EBO.h"
 #include "VAO.h"
+#include "Texture.h"
 
 class Model
 {

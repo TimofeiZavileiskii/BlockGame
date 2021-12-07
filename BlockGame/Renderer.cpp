@@ -16,6 +16,8 @@ Renderer::Renderer(int inWidth, int inHeight)
     glViewport(0, 0, width, height);
     glClearColor(0.3f, 0.2f, 0.2f, 1.0f);
 
+    glEnable(GL_DEPTH_TEST);
+
     dataManager = new DataManager();
 }
 
@@ -52,7 +54,7 @@ void Renderer::ProcessErrors(std::string error)
 
 void Renderer::Draw(Camera* camera) 
 {
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     dataManager->GetMesh("Test")->Bind();
     
@@ -61,6 +63,8 @@ void Renderer::Draw(Camera* camera)
     shader->SetUniformMatf4("model", glm::translate(glm::mat4(0.4f), glm::vec3(0.4f, 0.4f, 0.0f)));
     shader->SetUniformMatf4("view", camera->GetViewMatrix());
     shader->SetUniformMatf4("projection", camera->GetPerspectiveMatrix());
+
+    dataManager->GetTexture("Test")->Bind();
 
     glDrawArrays(GL_TRIANGLES, 0, 36);
 
