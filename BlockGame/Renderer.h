@@ -20,7 +20,7 @@ private:
 
 	void ProcessErrors();
 
-	void ProcessErrors(std::string error);
+	void ProcessErrors(const std::string& error);
 
 public:
 	Renderer(int inWidth, int inHeight);

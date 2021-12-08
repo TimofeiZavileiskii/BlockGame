@@ -15,6 +15,6 @@ public:
 
 	void Bind() const;
 
-	void SetUniformMatf4(std::string name, glm::mat4 matrix);
+	void SetUniformMatf4(const std::string& name, const glm::mat4& matrix);
 };
 

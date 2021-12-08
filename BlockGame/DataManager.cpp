@@ -5,7 +5,7 @@ void DataManager::AddShaders()
     shaders["Test"] = ReadShader("Test");
 }
 
-Shader* DataManager::ReadShader(std::string shaderName) 
+Shader* DataManager::ReadShader(const std::string& shaderName) 
 {
     std::ifstream vertShader("Data/Shaders/" + shaderName + "/" + shaderName + ".vert");
     std::ifstream fragShader("Data/Shaders/" + shaderName + "/" + shaderName + ".frag");
@@ -100,17 +100,17 @@ void DataManager::AddMeshes()
     meshes["Test"] = new Model(new VAO(verts, layout), indicesObj);
 }
 
-Shader* DataManager::GetShader(std::string name) 
+Shader* DataManager::GetShader(const std::string& name)
 {
 	return shaders[name];
 }
 
-Model* DataManager::GetMesh(std::string name)
+Model* DataManager::GetMesh(const std::string& name)
 {
 	return meshes[name];
 }
 
-Texture* DataManager::GetTexture(std::string name) 
+Texture* DataManager::GetTexture(const std::string& name)
 {
     return textures[name];
 }

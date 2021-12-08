@@ -12,7 +12,7 @@ ErrorLoger* ErrorLoger::instance()
 	return errorLoger;
 }
 
-void ErrorLoger::PushError(std::string title, std::string message)
+void ErrorLoger::PushError(const std::string& title, const std::string& message)
 {
 	std::cout << "---" << title << " reports:\n";
 	std::cout << message << "\n";

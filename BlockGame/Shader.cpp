@@ -25,7 +25,7 @@ void Shader::Bind() const
     glUseProgram(ID);
 }
 
-void Shader::SetUniformMatf4(std::string name, glm::mat4 matrix)
+void Shader::SetUniformMatf4(const std::string& name, const glm::mat4& matrix)
 {
     int uniformId = glGetUniformLocation(ID, name.c_str());
     glUniformMatrix4fv(uniformId, 1, GL_FALSE, glm::value_ptr(matrix));

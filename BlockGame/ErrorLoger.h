@@ -13,6 +13,6 @@ private:
 public:
 	static ErrorLoger* instance();
 
-	void PushError(std::string title, std::string message);
+	void PushError(const std::string& title, const std::string& message);
 };
 

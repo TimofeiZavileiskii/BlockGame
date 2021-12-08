@@ -14,7 +14,7 @@ Renderer::Renderer(int inWidth, int inHeight)
     }
 
     glViewport(0, 0, width, height);
-    glClearColor(0.3f, 0.2f, 0.2f, 1.0f);
+    glClearColor(0.65f, 0.90f, 1.0f, 1.0f);
 
     glEnable(GL_DEPTH_TEST);
 
@@ -43,7 +43,7 @@ void Renderer::ProcessErrors()
     }
 }
 
-void Renderer::ProcessErrors(std::string error)
+void Renderer::ProcessErrors(const std::string& error)
 {
     GLenum errorCode;
     while ((errorCode = glGetError()) != GL_NO_ERROR)

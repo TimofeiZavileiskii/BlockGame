@@ -17,7 +17,7 @@ private:
 	std::map<std::string, Model*> meshes;
 	std::map<std::string, Texture*> textures;
 
-	Shader* ReadShader(std::string shaderName);
+	Shader* ReadShader(const std::string& shaderName);
 
 	void AddShaders();
 	void AddMeshes();
@@ -26,8 +26,8 @@ private:
 public:
 	DataManager();
 
-	Shader* GetShader(std::string name);
-	Model* GetMesh(std::string name);
-	Texture* GetTexture(std::string name);
+	Shader* GetShader(const std::string& name);
+	Model* GetMesh(const std::string& name);
+	Texture* GetTexture(const std::string& name);
 };
 
