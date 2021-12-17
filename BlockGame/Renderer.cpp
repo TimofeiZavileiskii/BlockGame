@@ -1,4 +1,11 @@
+#include "pch.h"
 #include "Renderer.h"
+
+#include <glad/glad.h>
+#include <glfw3.h>
+#include "DataManager.h"
+#include "ErrorLoger.h"
+#include "Camera.h"
 
 Renderer::Renderer(int inWidth, int inHeight) 
 {
@@ -29,34 +36,32 @@ void Renderer::ProcessErrors()
         std::string error;
         switch (errorCode)
         {
-        case GL_INVALID_ENUM:                  error = "INVALID_ENUM"; break;
-        case GL_INVALID_VALUE:                 error = "INVALID_VALUE"; break;
-        case GL_INVALID_OPERATION:             error = "INVALID_OPERATION"; break;
-        case GL_STACK_OVERFLOW:                error = "STACK_OVERFLOW"; break;
-        case GL_STACK_UNDERFLOW:               error = "STACK_UNDERFLOW"; break;
-        case GL_OUT_OF_MEMORY:                 error = "OUT_OF_MEMORY"; break;
-        case GL_INVALID_FRAMEBUFFER_OPERATION: error = "INVALID_FRAMEBUFFER_OPERATION"; break;
+        case GL_INVALID_ENUM:                  
+            error = "INVALID_ENUM"; break;
+        case GL_INVALID_VALUE:                 
+            error = "INVALID_VALUE"; break;
+        case GL_INVALID_OPERATION:             
+            error = "INVALID_OPERATION"; break;
+        case GL_STACK_OVERFLOW:                
+            error = "STACK_OVERFLOW"; break;
+        case GL_STACK_UNDERFLOW:               
+            error = "STACK_UNDERFLOW"; break;
+        case GL_OUT_OF_MEMORY:                 
+            error = "OUT_OF_MEMORY"; break;
+        case GL_INVALID_FRAMEBUFFER_OPERATION: 
+            error = "INVALID_FRAMEBUFFER_OPERATION"; break;
         }
 
         errorLoger->PushError(errorTitle, error);
-        std::cout << ((int)errorCode) << "\n";
+       // errorLoger->PushError(errorTitle, (int)errorCode);
     }
 }
 
-void Renderer::ProcessErrors(const std::string& error)
-{
-    GLenum errorCode;
-    while ((errorCode = glGetError()) != GL_NO_ERROR)
-    {
-        errorLoger->PushError(errorTitle, error);
-    }
-}
-
-void Renderer::Draw(Camera* camera) 
+void Renderer::Draw(Camera* camera, Model* world) 
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    dataManager->GetMesh("Test")->Bind();
+    world->Bind();
     
     Shader* shader = dataManager->GetShader("Test");
     shader->Bind();
@@ -64,9 +69,9 @@ void Renderer::Draw(Camera* camera)
     shader->SetUniformMatf4("view", camera->GetViewMatrix());
     shader->SetUniformMatf4("projection", camera->GetPerspectiveMatrix());
 
-    dataManager->GetTexture("Test")->Bind();
+    dataManager->GetTexture("Stone")->Bind();
 
-    glDrawArrays(GL_TRIANGLES, 0, 36);
+    world->Draw();
 
     ProcessErrors();
 }

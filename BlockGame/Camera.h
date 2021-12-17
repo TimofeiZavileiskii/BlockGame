@@ -1,9 +1,7 @@
 #pragma once
-#include <glm/vec2.hpp>
-#include <glm/glm.hpp>
-#include <glm/gtx/string_cast.hpp>
 #include "Entity.h"
 #include "ErrorLoger.h"
+#include <glm/mat4x4.hpp>
 
 class Camera : public Entity
 {

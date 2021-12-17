@@ -1,4 +1,6 @@
+#include "pch.h"
 #include "EBO.h"
+#include <glad/glad.h>
 
 EBO::EBO(unsigned int* input, int count)
 {

@@ -1,4 +1,11 @@
+#include "pch.h"
+#define GLFW_INCLUDE_NONE
 #include "Window.h"
+
+#include <glfw3.h>
+#include "ErrorLoger.h"
+#include "InputManager.h"
+#include <iostream>
 
 Window::Window(int inWidth, int inHeight, std::string inTitle) 
 {
@@ -42,8 +49,9 @@ void Window::ProcessEvents()
 
 void Window::UpdateTime() 
 {
-    passedTime = glfwGetTime();
-    glfwSetTime(0);
+    double currentTime = glfwGetTime();
+    passedTime = currentTime - lastFrameTime;
+    lastFrameTime = currentTime;
 }
 
 glm::dvec2 Window::GetCursorOffset()

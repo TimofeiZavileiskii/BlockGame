@@ -1,4 +1,6 @@
+#include "pch.h"
 #include "VBO.h"
+#include <glad/glad.h>
 
 VBO::VBO(float* input, int vertexNumber, int vertexSize)
 {

@@ -1,11 +1,7 @@
 #pragma once
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include <iterator>
+#include <string>
 #include <map>
 
-#include "ErrorLoger.h"
 #include "Shader.h"
 #include "Model.h"
 

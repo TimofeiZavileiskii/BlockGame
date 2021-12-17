@@ -1,4 +1,10 @@
+#include "pch.h"
 #include "DataManager.h"
+#include "ImageReader.h"
+
+#include <fstream>
+#include <iterator>
+#include "ErrorLoger.h"
 
 void DataManager::AddShaders() 
 {
@@ -18,15 +24,13 @@ Shader* DataManager::ReadShader(const std::string& shaderName)
 
 void DataManager::AddTextures() 
 {
-    unsigned char text[] =
-    {
-        144,  80, 200, 255, 144, 80,  200, 255, 144, 80,  200, 255, 144, 80,  200, 255,
-        144, 80,  200, 255,   0,   0,   0, 255,   0,   0,   0, 255, 144, 80,  200, 255,
-        144, 80,  200, 255,   0,   0,   0, 255,   0,   0,   0, 255, 144, 80,  200, 255,
-        144, 80,  200, 255, 144, 80,  200, 255, 144, 80,  200, 255, 144, 80,  200, 255,
-    };
+    ImageReader imReader = ImageReader();
 
-    textures["Test"] = new Texture(text, 4, 4);
+    ImageData image = imReader.ReadImage("Data/Textures/Stone.tga");
+
+    textures["Stone"] = new Texture(image.imageData, image.width, image.height);
+
+    delete[] image.imageData;
 }
 
 void DataManager::AddMeshes() 

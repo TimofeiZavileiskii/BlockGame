@@ -92,6 +92,15 @@
     <ClCompile Include="Texture.cpp">
       <Filter>Renderer\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ImageReader.cpp">
+      <Filter>Renderer\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>Other</Filter>
+    </ClCompile>
+    <ClCompile Include="Chunk.cpp">
+      <Filter>World\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Renderer.h">
@@ -138,6 +147,18 @@
     </ClInclude>
     <ClInclude Include="Texture.h">
       <Filter>Renderer\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageReader.h">
+      <Filter>Renderer\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="CubeMeshCreator.h">
+      <Filter>Renderer\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Chunk.h">
+      <Filter>World\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

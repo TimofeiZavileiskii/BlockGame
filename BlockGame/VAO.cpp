@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "VAO.h"
 
 VAO::VAO(VBO* vbo, std::vector<VaoLayoutElement> inLayout)
@@ -29,6 +30,7 @@ VAO::VAO(VBO* vbo, std::vector<VaoLayoutElement> inLayout)
 
 VAO::~VAO() 
 {
+	delete vertexBuffer;
 	glDeleteVertexArrays(1, &index);
 }
 

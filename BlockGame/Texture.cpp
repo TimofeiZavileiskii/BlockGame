@@ -1,7 +1,10 @@
+#include "pch.h"
 #include "Texture.h"
+#include <glad/glad.h>
 
 Texture::Texture(unsigned char* image, int width, int height)
 {
+
     glGenTextures(1, &index);
     glBindTexture(GL_TEXTURE_2D, index);
 

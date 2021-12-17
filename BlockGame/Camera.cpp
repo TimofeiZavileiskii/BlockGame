@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Camera.h"
 
 void Camera::SetCameraFront() 
@@ -15,7 +16,7 @@ Camera::Camera(glm::vec3 inPosition, glm::vec2 inRotation, float inFov, float in
 {
 	fov = inFov;
     aspectRatio = inAspectRatio;
-    speed = 4.00f;
+    speed = 20.00f;
 
     rotation = inRotation;
 

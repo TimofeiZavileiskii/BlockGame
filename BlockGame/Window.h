@@ -1,9 +1,9 @@
 #pragma once
-#include <glfw3.h>
-#include <glm/vec2.hpp>
-#include "ErrorLoger.h"
 #include "InputManager.h"
 
+struct GLFWwindow;
+class InputManager;
+class ErrorLoger;
 
 class Window
 {
@@ -22,6 +22,7 @@ private:
     std::string errorTitle;
 
     double passedTime;
+    double lastFrameTime;
 
     void UpdateTime();
 

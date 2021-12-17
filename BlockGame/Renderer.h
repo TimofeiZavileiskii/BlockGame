@@ -1,11 +1,10 @@
 #pragma once
-#include <glad/glad.h>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glfw3.h>
+#include <string>
 
-#include "DataManager.h"
-#include "ErrorLoger.h"
-#include "Camera.h"
+class DataManager;
+class Camera;
+class ErrorLoger;
+class Model;
 
 class Renderer
 {
@@ -20,11 +19,9 @@ private:
 
 	void ProcessErrors();
 
-	void ProcessErrors(const std::string& error);
-
 public:
 	Renderer(int inWidth, int inHeight);
 
-	void Draw(Camera* camera);
+	void Draw(Camera* camera, Model* world);
 };
 

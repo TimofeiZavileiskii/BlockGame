@@ -2,7 +2,7 @@
 #include "Renderer.h"
 #include "Window.h"
 #include "World.h"
-
+#include <iostream>
 
 class Game
 {
@@ -12,6 +12,8 @@ private:
 	Renderer* renderer;
 
 	bool end;
+	int fpsCounter;
+	double passedTime;
 
 	void Loop() 
 	{
@@ -20,12 +22,22 @@ private:
 			window->ProcessEvents();
 			
 			world->Update();
-			renderer->Draw(world->GetCamera());
+			renderer->Draw(world->GetCamera(), world->GetChunkMesh());
 
 			window->Update();
 
-			if (window->GetInput(ESC)) {
+			if (window->GetInput(ESC))
+			{
 				end = true;
+			}
+
+			fpsCounter++;
+			passedTime += window->GetTime();
+			if (passedTime > 1.0f)
+			{
+				std::cout << "FPS: " << fpsCounter << "\n";
+				passedTime = 0.0f;
+				fpsCounter = 0;
 			}
 		}
 	}

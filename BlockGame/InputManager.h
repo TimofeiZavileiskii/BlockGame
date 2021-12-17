@@ -1,5 +1,4 @@
 #pragma once
-#include <glfw3.h>
 #include <glm/vec2.hpp>
 
 enum KeyCodes
@@ -12,6 +11,8 @@ enum KeyCodes
 	LEFT_MOUSE, RIGHT_MOUSE,
 	NUMBER_OF_KEY_CODES
 };
+
+struct GLFWwindow;
 
 class InputManager
 {

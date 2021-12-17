@@ -1,5 +1,6 @@
+#include "pch.h"
 #include "InputManager.h"
-
+#include <glfw3.h>
 
 InputManager::InputManager(GLFWwindow* inWindow, int width, int height)
 {

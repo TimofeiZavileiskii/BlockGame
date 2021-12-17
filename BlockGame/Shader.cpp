@@ -1,4 +1,6 @@
+#include "pch.h"
 #include "Shader.h"
+#include <glad/glad.h>
 
 Shader::Shader(const char* vertShaderSource, const char* fragShaderSource) 
 {

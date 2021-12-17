@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Entity.h"
 
 glm::vec3 Entity::GetPosition() 
