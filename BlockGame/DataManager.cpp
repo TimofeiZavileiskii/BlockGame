@@ -35,6 +35,7 @@ void DataManager::AddTextures()
 
 void DataManager::AddMeshes() 
 {
+    /*
     float vertices[] = {
         -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
          0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
@@ -101,7 +102,7 @@ void DataManager::AddMeshes()
     std::vector<VaoLayoutElement> layout = std::vector<VaoLayoutElement>();
     layout.push_back(VaoLayoutElement(FLOAT, 3, false));
     layout.push_back(VaoLayoutElement(FLOAT, 2, false));
-    meshes["Test"] = new Model(new VAO(verts, layout), indicesObj);
+    meshes["Test"] = new Model(new VAO(verts, layout), indicesObj);*/
 }
 
 Shader* DataManager::GetShader(const std::string& name)

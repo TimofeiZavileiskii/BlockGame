@@ -7,7 +7,7 @@ class Texture
 public:
 	Texture(unsigned char* image, int width, int height);
 
-	void Bind() const;
+	void Bind(int slot = 0) const;
 
 };
 

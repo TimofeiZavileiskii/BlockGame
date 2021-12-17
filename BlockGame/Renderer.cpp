@@ -57,21 +57,24 @@ void Renderer::ProcessErrors()
     }
 }
 
-void Renderer::Draw(Camera* camera, Model* world) 
+void Renderer::Draw(Camera* camera, std::vector<Model*> chunks)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    world->Bind();
-    
     Shader* shader = dataManager->GetShader("Test");
     shader->Bind();
-    shader->SetUniformMatf4("model", glm::translate(glm::mat4(0.4f), glm::vec3(0.4f, 0.4f, 0.0f)));
     shader->SetUniformMatf4("view", camera->GetViewMatrix());
     shader->SetUniformMatf4("projection", camera->GetPerspectiveMatrix());
-
     dataManager->GetTexture("Stone")->Bind();
 
-    world->Draw();
+    for (Model* model : chunks) 
+    {
+        model->Bind();
+        shader->SetUniformMatf4("model", glm::translate(glm::mat4(1.0f), model->GetPosition()));
+
+        model->Draw();
+    }
+
 
     ProcessErrors();
 }

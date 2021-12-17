@@ -22,7 +22,7 @@ private:
 			window->ProcessEvents();
 			
 			world->Update();
-			renderer->Draw(world->GetCamera(), world->GetChunkMesh());
+			renderer->Draw(world->GetCamera(), world->GetChunkModels());
 
 			window->Update();
 

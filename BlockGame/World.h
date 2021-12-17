@@ -2,61 +2,9 @@
 #include "Entity.h"
 #include "Camera.h"
 #include "Model.h"
+#include "Chunk.h"
 
 class Window;
-
-struct BlockType
-{
-	bool transparent;
-	std::string texture;
-
-	BlockType(bool inTransparent, const std::string& inTexture)
-	{
-		transparent = inTransparent;
-		texture = inTexture;
-	}
-
-	BlockType(bool inTransparent, const char* inTexture)
-	{
-		transparent = inTransparent;
-		texture = std::string(inTexture);
-	}
-
-	BlockType() { }
-};
-
-struct Block
-{
-	BlockType* type;
-
-	Block(BlockType* inType) 
-	{
-		type = inType;
-	}
-
-	std::string GetTexture() 
-	{
-		return type->texture;
-	}
-
-	bool GetTransperency() 
-	{
-		return type->transparent;
-	}
-
-	BlockType* GetType() 
-	{
-		return type;
-	}
-
-	Block() { }
-};
-
-enum BlockId
-{
-	AIR, STONE,
-	BLOCK_ID_LENGTH
-};
 
 class World
 {
@@ -66,21 +14,13 @@ private:
 
 	Window* window;
 	Camera* camera;
-	Model* worldMesh;
+	Chunk* chunk;
+
+	std::vector<Model*> chunkModels;
+
 	double passedTime;
 
-	Block* blockData;
-	BlockType* blockTypes;
-
-	void FillBlockData();
-
-	void AssignBlockTypes();
-
 	void UpdateCamera();
-
-	void GenerateChunkMesh();
-
-	inline int GetCoord(int x, int y, int z);
 
 public:
 	World(Window* inWindow);
@@ -89,6 +29,6 @@ public:
 
 	Camera* GetCamera();
 
-	Model* GetChunkMesh();
+	std::vector<Model*>& GetChunkModels();
 };
 

@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <vector>
 
 class DataManager;
 class Camera;
@@ -22,6 +23,6 @@ private:
 public:
 	Renderer(int inWidth, int inHeight);
 
-	void Draw(Camera* camera, Model* world);
+	void Draw(Camera* camera, std::vector<Model*> chunks);
 };
 
