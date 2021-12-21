@@ -46,6 +46,8 @@ public:
 	Game() 
 	{
 		end = false;
+		fpsCounter = 0;
+		passedTime = 0.0f;
 		int width = 1000;
 		int height = 850;
 

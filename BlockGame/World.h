@@ -1,10 +1,10 @@
 #pragma once
-#include "Entity.h"
 #include "Camera.h"
 #include "Model.h"
-#include "Chunk.h"
 
 class Window;
+class Chunk;
+class ChunkLoader;
 
 class World
 {
@@ -14,9 +14,7 @@ private:
 
 	Window* window;
 	Camera* camera;
-	Chunk* chunk;
-
-	std::vector<Model*> chunkModels;
+	ChunkLoader* chunkLoader;
 
 	double passedTime;
 

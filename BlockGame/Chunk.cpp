@@ -2,6 +2,7 @@
 #include "Chunk.h"
 #include "Model.h"
 #include "CubeMeshCreator.h"
+#include <tuple>
 
 BlockType* Chunk::blockTypes;
 
@@ -14,11 +15,11 @@ void Chunk::GenerateTerrain()
 			for (int iii = 0; iii < CHUNK_DIMENSION; iii++) {
 				if (ii < CHUNK_DIMENSION / 2)
 				{
-					blocks[GetCoord(i, ii, iii)] = Block(&blockTypes[STONE]);
+					blocks[GetArrayPos(i, ii, iii)] = Block(&blockTypes[STONE]);
 				}
 				else
 				{
-					blocks[GetCoord(i, ii, iii)] = Block(&blockTypes[AIR]);
+					blocks[GetArrayPos(i, ii, iii)] = Block(&blockTypes[AIR]);
 				}
 			}
 		}
@@ -43,13 +44,13 @@ void Chunk::GenerateChunkMesh()
 		{
 			for (int iii = 0; iii < CHUNK_DIMENSION; iii++)
 			{
-				if (!blocks[GetCoord(i, ii, iii)].GetTransperency())
+				if (!blocks[GetArrayPos(i, ii, iii)].GetTransperency())
 				{
 					if (ii - 1 < 0)
 					{
 						cubeMesh.AddFrontFace(i, ii, iii);
 					}
-					else if (blocks[GetCoord(i, ii - 1, iii)].GetTransperency())
+					else if (blocks[GetArrayPos(i, ii - 1, iii)].GetTransperency())
 					{
 						cubeMesh.AddFrontFace(i, ii, iii);
 					}
@@ -58,7 +59,7 @@ void Chunk::GenerateChunkMesh()
 					{
 						cubeMesh.AddTopFace(i, ii, iii);
 					}
-					else if (blocks[GetCoord(i, ii, iii + 1)].GetTransperency())
+					else if (blocks[GetArrayPos(i, ii, iii + 1)].GetTransperency())
 					{
 						cubeMesh.AddTopFace(i, ii, iii);
 					}
@@ -67,7 +68,7 @@ void Chunk::GenerateChunkMesh()
 					{
 						cubeMesh.AddLeftFace(i, ii, iii);
 					}
-					else if (blocks[GetCoord(i - 1, ii, iii)].GetTransperency())
+					else if (blocks[GetArrayPos(i - 1, ii, iii)].GetTransperency())
 					{
 						cubeMesh.AddLeftFace(i, ii, iii);
 					}
@@ -76,7 +77,7 @@ void Chunk::GenerateChunkMesh()
 					{
 						cubeMesh.AddRightFace(i, ii, iii);
 					}
-					else if (blocks[GetCoord(i + 1, ii, iii)].GetTransperency())
+					else if (blocks[GetArrayPos(i + 1, ii, iii)].GetTransperency())
 					{
 						cubeMesh.AddRightFace(i, ii, iii);
 					}
@@ -85,7 +86,7 @@ void Chunk::GenerateChunkMesh()
 					{
 						cubeMesh.AddBottomFace(i, ii, iii);
 					}
-					else if (blocks[GetCoord(i, ii, iii - 1)].GetTransperency())
+					else if (blocks[GetArrayPos(i, ii, iii - 1)].GetTransperency())
 					{
 						cubeMesh.AddBottomFace(i, ii, iii);
 					}
@@ -95,7 +96,7 @@ void Chunk::GenerateChunkMesh()
 					{
 						cubeMesh.AddBackFace(i, ii, iii);
 					}
-					else if (blocks[GetCoord(i, ii + 1, iii)].GetTransperency())
+					else if (blocks[GetArrayPos(i, ii + 1, iii)].GetTransperency())
 					{
 						cubeMesh.AddBackFace(i, ii, iii);
 					}
@@ -113,17 +114,30 @@ void Chunk::GenerateChunkMesh()
 	EBO* ebo = new EBO(cubeMesh.GetIndexData(), cubeMesh.GetIndexCount());
 
 	delete chunkMesh;
-	chunkMesh = new Model(vao, ebo, glm::vec3(0.0f));
+	chunkMesh = new Model(vao, ebo, glm::vec3(coordinates.x * CHUNK_DIMENSION, coordinates.y * CHUNK_DIMENSION, 
+		coordinates.z * CHUNK_DIMENSION));
 }
 
-inline int Chunk::GetCoord(int x, int y, int z)
+inline int Chunk::GetArrayPos(int x, int y, int z)
 {
-	return x + CHUNK_DIMENSION * y + CHUNK_DIMENSION * CHUNK_DIMENSION * z;;
+	return x + CHUNK_DIMENSION * y + CHUNK_DIMENSION * CHUNK_DIMENSION * z;
 }
 
-Chunk::Chunk()
+inline int Chunk::GetArrayPos(Coordinates coord)
 {
-	if (blockTypes == nullptr) 
+	GetArrayPos(coord.x, coord.y, coord.z);
+}
+
+Chunk::Chunk(int inX, int inY, int inZ)
+{
+	Chunk(Coordinates(inX, inY, inZ));
+}
+
+Chunk::Chunk(Coordinates coord)
+{
+	coordinates = coord;
+
+	if (blockTypes == nullptr)
 	{
 		Chunk::AssignBlockTypes();
 	}
@@ -134,7 +148,9 @@ Chunk::Chunk()
 
 void Chunk::Update()
 {
+
 }
+
 
 Model* Chunk::GetChunkModel()
 {

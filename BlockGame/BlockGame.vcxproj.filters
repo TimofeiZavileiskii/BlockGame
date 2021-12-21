@@ -101,6 +101,9 @@
     <ClCompile Include="Chunk.cpp">
       <Filter>World\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ChunkLoader.cpp">
+      <Filter>World\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Renderer.h">
@@ -161,6 +164,9 @@
       <Filter>World\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Block.h">
+      <Filter>World\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ChunkLoader.h">
       <Filter>World\Header Files</Filter>
     </ClInclude>
   </ItemGroup>

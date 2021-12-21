@@ -2,7 +2,8 @@
 #include "World.h"
 #include "Window.h"
 #include "CubeMeshCreator.h"
-#include <random>
+#include "ChunkLoader.h"
+#include "Chunk.h"
 
 void World::UpdateCamera()
 {
@@ -23,11 +24,17 @@ void World::UpdateCamera()
 World::World(Window* inWindow)
 {
 	window = inWindow;
-	camera = new Camera(glm::vec3(0.0f, 40.0f, 20.0f), glm::vec2(0.0f, 0.0f), 70.0f, window->GetAspectRation());
-	chunk = new Chunk();
-
-	chunkModels = std::vector<Model*>();
-	chunkModels.push_back(chunk->GetChunkModel());
+	camera = new Camera(glm::vec3(0.0f, 20.0f, 10.0f), glm::vec2(0.0f, 20.0f), 70.0f, window->GetAspectRation());
+	chunkLoader = new ChunkLoader();
+	chunkLoader->GetChunk(0, 0, 0);
+	chunkLoader->GetChunk(1, 0, 0);
+	chunkLoader->GetChunk(0, 0, 1);
+	chunkLoader->GetChunk(0, 0, -1);
+	chunkLoader->GetChunk(-1, 0, 0);
+	chunkLoader->GetChunk(1, 0, 1);
+	chunkLoader->GetChunk(-1, 0, 1);
+	chunkLoader->GetChunk(1, 0, -1);
+	chunkLoader->GetChunk(-1, 0, -1);
 
 	Update();
 }
@@ -35,7 +42,7 @@ World::World(Window* inWindow)
 void World::Update()
 {
 	passedTime = window->GetTime();
-	chunk->Update();
+	chunkLoader->Update();
 
 	UpdateCamera();
 }
@@ -47,5 +54,5 @@ Camera* World::GetCamera()
 
 std::vector<Model*>& World::GetChunkModels()
 {
-	return chunkModels;
+	return chunkLoader->GetChunkModels();
 }
