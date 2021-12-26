@@ -1,9 +1,13 @@
 #include "pch.h"
 #include "DataManager.h"
 #include "ImageReader.h"
+#include "BlockTextureAtlas.h"
+#include "Shader.h"
+#include "Model.h"
 
 #include <fstream>
 #include <iterator>
+#include <filesystem>
 #include "ErrorLoger.h"
 
 void DataManager::AddShaders() 
@@ -25,84 +29,56 @@ Shader* DataManager::ReadShader(const std::string& shaderName)
 void DataManager::AddTextures() 
 {
     ImageReader imReader = ImageReader();
+    std::vector<BlockTexture> blockTextures = std::vector<BlockTexture>();
 
-    ImageData image = imReader.ReadImage("Data/Textures/Stone.tga");
+    std::string textureDir = "Data/Textures/";
 
-    textures["Stone"] = new Texture(image.imageData, image.width, image.height);
+    for (const auto& entry : std::filesystem::directory_iterator(textureDir)) 
+    {
+        std::string extension;
+        std::string fileName;
+        GetFileExtName(entry.path().string(), extension, fileName);
 
-    delete[] image.imageData;
+        if (extension == ".tga") 
+        {
+            ImageData image = imReader.ReadImage(textureDir + fileName + extension);
+
+            textures[fileName.data()] = new Texture(image.imageData, image.width, image.height);
+            blockTextures.push_back(BlockTexture(fileName, image));
+        }
+    }
+
+    atlas = new BlockTextureAtlas(blockTextures);
+
+    for (BlockTexture texture : blockTextures) 
+    {
+        delete[] texture.texture.imageData;
+    }
+}
+
+void DataManager::GetFileExtName(const std::string& filePath, std::string& extension, std::string& fileName)
+{
+    int posLastDot = 0;
+    int posLastSlash = 0;
+    for (int i = 0; i < filePath.size(); i++)
+    {
+        if (filePath[i] == '.') 
+        {
+            posLastDot = i;
+        }
+        else if (filePath[i] == '/') 
+        {
+            posLastSlash = i;
+        }
+    }
+
+    extension = filePath.substr(posLastDot, filePath.size() - posLastDot);
+    fileName = filePath.substr(posLastSlash + 1, filePath.size() - posLastSlash - (filePath.size() - posLastDot) - 1);
 }
 
 void DataManager::AddMeshes() 
 {
-    /*
-    float vertices[] = {
-        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-         0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-
-        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-         0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-         0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-         0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-         0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
-    };
-
-    unsigned int indices[] = {
-        0, 1, 2,
-        3, 4, 5,
-        6, 7, 8,
-        9, 10, 11,
-        12, 13, 14,
-        15, 16, 17,
-        18, 19, 20,
-        21, 22, 23,
-        24, 25, 26,
-        27, 28, 29,
-        30, 31, 32,
-        33, 34, 35,
-    };
-
-    EBO* indicesObj = new EBO(indices, 36);
-
-    VBO* verts = new VBO(vertices, 36, 5);
-
-    std::vector<VaoLayoutElement> layout = std::vector<VaoLayoutElement>();
-    layout.push_back(VaoLayoutElement(FLOAT, 3, false));
-    layout.push_back(VaoLayoutElement(FLOAT, 2, false));
-    meshes["Test"] = new Model(new VAO(verts, layout), indicesObj);*/
+    
 }
 
 Shader* DataManager::GetShader(const std::string& name)
@@ -118,6 +94,11 @@ Model* DataManager::GetMesh(const std::string& name)
 Texture* DataManager::GetTexture(const std::string& name)
 {
     return textures[name];
+}
+
+BlockTextureAtlas* DataManager::GetAtlas()
+{
+    return atlas;
 }
 
 DataManager::DataManager() 

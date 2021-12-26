@@ -9,10 +9,11 @@ int ChunkLoader::HashCoordinates(Coordinates coords)
 	return coords.x + coords.y * 100 + coords.z * 1000;
 }
 
-ChunkLoader::ChunkLoader()
+ChunkLoader::ChunkLoader(BlockTextureAtlas* atlas)
 {
 	chunks = std::map<int, Chunk*>();
 	chunkModels = std::vector<Model*>();
+	this->atlas = atlas;
 }
 
 void ChunkLoader::Update()
@@ -39,7 +40,7 @@ Chunk* ChunkLoader::GetChunk(Coordinates coords)
 {
 	if (chunks.find(HashCoordinates(coords)) == chunks.end()) 
 	{
-		chunks[HashCoordinates(coords)] = new Chunk(coords);
+		chunks[HashCoordinates(coords)] = new Chunk(coords, atlas);
 	}
 	
 	return chunks[HashCoordinates(coords)];

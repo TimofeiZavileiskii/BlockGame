@@ -1,5 +1,9 @@
 #include "pch.h"
 #include "Renderer.h"
+#include "Shader.h"
+#include "Model.h"
+#include "Texture.h"
+
 
 #include <glad/glad.h>
 #include <glfw3.h>
@@ -22,15 +26,21 @@ Renderer::Renderer(int inWidth, int inHeight)
 
     glViewport(0, 0, width, height);
     glClearColor(0.65f, 0.90f, 1.0f, 1.0f);
-
     glEnable(GL_DEPTH_TEST);
+
+    //glEnable(GL_CULL_FACE);
 
     dataManager = new DataManager();
 }
 
+BlockTextureAtlas* Renderer::GetAtlas()
+{
+    return dataManager->GetAtlas();
+}
+
 void Renderer::ProcessErrors() 
 {
-    GLenum errorCode;
+    GLenum errorCode = 0;
     while ((errorCode = glGetError()) != GL_NO_ERROR)
     {
         std::string error;
@@ -53,7 +63,7 @@ void Renderer::ProcessErrors()
         }
 
         errorLoger->PushError(errorTitle, error);
-       // errorLoger->PushError(errorTitle, (int)errorCode);
+        errorLoger->PushError(errorTitle, (int)errorCode);
     }
 }
 
@@ -65,7 +75,9 @@ void Renderer::Draw(Camera* camera, std::vector<Model*> chunks)
     shader->Bind();
     shader->SetUniformMatf4("view", camera->GetViewMatrix());
     shader->SetUniformMatf4("projection", camera->GetPerspectiveMatrix());
-    dataManager->GetTexture("Stone")->Bind();
+
+    dataManager->GetAtlas()->UseAtlas();
+
 
     for (Model* model : chunks) 
     {

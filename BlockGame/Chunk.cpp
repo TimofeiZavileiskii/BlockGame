@@ -2,7 +2,6 @@
 #include "Chunk.h"
 #include "Model.h"
 #include "CubeMeshCreator.h"
-#include <tuple>
 
 BlockType* Chunk::blockTypes;
 
@@ -13,9 +12,21 @@ void Chunk::GenerateTerrain()
 	for (int i = 0; i < CHUNK_DIMENSION; i++) {
 		for (int ii = 0; ii < CHUNK_DIMENSION; ii++) {
 			for (int iii = 0; iii < CHUNK_DIMENSION; iii++) {
-				if (ii < CHUNK_DIMENSION / 2)
+				if (ii == 0)
 				{
 					blocks[GetArrayPos(i, ii, iii)] = Block(&blockTypes[STONE]);
+				}
+				else if (ii == 1)
+				{
+					blocks[GetArrayPos(i, ii, iii)] = Block(&blockTypes[SAND]);
+				}
+				else if (ii == 2)
+				{
+					blocks[GetArrayPos(i, ii, iii)] = Block(&blockTypes[DIRT]);
+				}
+				else if (ii == 3)
+				{
+					blocks[GetArrayPos(i, ii, iii)] = Block(&blockTypes[BRICK]);
 				}
 				else
 				{
@@ -32,11 +43,15 @@ void Chunk::AssignBlockTypes()
 
 	blockTypes[AIR] = BlockType(true, "");
 	blockTypes[STONE] = BlockType(false, "Stone");
+	blockTypes[SAND] = BlockType(false, "Sand");
+	blockTypes[DIRT] = BlockType(false, "Dirt");
+	blockTypes[BRICK] = BlockType(false, "Bricks");
+
 }
 
 void Chunk::GenerateChunkMesh()
 {
-	CubeMeshCreator cubeMesh = CubeMeshCreator();
+	CubeMeshCreator cubeMesh = CubeMeshCreator(atlas);
 
 	for (int i = 0; i < CHUNK_DIMENSION; i++)
 	{
@@ -46,59 +61,59 @@ void Chunk::GenerateChunkMesh()
 			{
 				if (!blocks[GetArrayPos(i, ii, iii)].GetTransperency())
 				{
+					int arrayPos = GetArrayPos(i, ii, iii);
 					if (ii - 1 < 0)
 					{
-						cubeMesh.AddFrontFace(i, ii, iii);
+						cubeMesh.AddBottomFace(i, ii, iii, blocks[arrayPos].GetTexture());
 					}
 					else if (blocks[GetArrayPos(i, ii - 1, iii)].GetTransperency())
 					{
-						cubeMesh.AddFrontFace(i, ii, iii);
+						cubeMesh.AddBottomFace(i, ii, iii, blocks[arrayPos].GetTexture());
 					}
 
-					if (iii + 2 > CHUNK_DIMENSION)
+					if (ii + 1 > CHUNK_DIMENSION - 1)
 					{
-						cubeMesh.AddTopFace(i, ii, iii);
+						cubeMesh.AddTopFace(i, ii, iii, blocks[arrayPos].GetTexture());
 					}
-					else if (blocks[GetArrayPos(i, ii, iii + 1)].GetTransperency())
+					else if (blocks[GetArrayPos(i, ii + 1, iii)].GetTransperency())
 					{
-						cubeMesh.AddTopFace(i, ii, iii);
+						cubeMesh.AddTopFace(i, ii, iii, blocks[arrayPos].GetTexture());
 					}
 
 					if (i - 1 < 0)
 					{
-						cubeMesh.AddLeftFace(i, ii, iii);
+						cubeMesh.AddLeftFace(i, ii, iii, blocks[arrayPos].GetTexture());
 					}
 					else if (blocks[GetArrayPos(i - 1, ii, iii)].GetTransperency())
 					{
-						cubeMesh.AddLeftFace(i, ii, iii);
+						cubeMesh.AddLeftFace(i, ii, iii, blocks[arrayPos].GetTexture());
 					}
 
-					if (i + 2 > CHUNK_DIMENSION)
+					if (i + 1 > CHUNK_DIMENSION - 1)
 					{
-						cubeMesh.AddRightFace(i, ii, iii);
+						cubeMesh.AddRightFace(i, ii, iii, blocks[arrayPos].GetTexture());
 					}
 					else if (blocks[GetArrayPos(i + 1, ii, iii)].GetTransperency())
 					{
-						cubeMesh.AddRightFace(i, ii, iii);
+						cubeMesh.AddRightFace(i, ii, iii, blocks[arrayPos].GetTexture());
 					}
 
 					if (iii - 1 < 0)
 					{
-						cubeMesh.AddBottomFace(i, ii, iii);
+						cubeMesh.AddFrontFace(i, ii, iii, blocks[arrayPos].GetTexture());
 					}
 					else if (blocks[GetArrayPos(i, ii, iii - 1)].GetTransperency())
 					{
-						cubeMesh.AddBottomFace(i, ii, iii);
+						cubeMesh.AddFrontFace(i, ii, iii, blocks[arrayPos].GetTexture());
 					}
 
-					//Add back face
-					if (ii + 2 > CHUNK_DIMENSION)
+					if (iii + 1 > CHUNK_DIMENSION - 1)
 					{
-						cubeMesh.AddBackFace(i, ii, iii);
+						cubeMesh.AddBackFace(i, ii, iii, blocks[arrayPos].GetTexture());
 					}
-					else if (blocks[GetArrayPos(i, ii + 1, iii)].GetTransperency())
+					else if (blocks[GetArrayPos(i, ii, iii + 1)].GetTransperency())
 					{
-						cubeMesh.AddBackFace(i, ii, iii);
+						cubeMesh.AddBackFace(i, ii, iii, blocks[arrayPos].GetTexture());
 					}
 				}
 			}
@@ -128,15 +143,15 @@ inline int Chunk::GetArrayPos(Coordinates coord)
 	GetArrayPos(coord.x, coord.y, coord.z);
 }
 
-Chunk::Chunk(int inX, int inY, int inZ)
+Chunk::Chunk(int inX, int inY, int inZ, BlockTextureAtlas* atlas)
 {
-	Chunk(Coordinates(inX, inY, inZ));
+	Chunk(Coordinates(inX, inY, inZ), atlas);
 }
 
-Chunk::Chunk(Coordinates coord)
+Chunk::Chunk(Coordinates coord, BlockTextureAtlas* atlas)
 {
 	coordinates = coord;
-
+	this->atlas = atlas;
 	if (blockTypes == nullptr)
 	{
 		Chunk::AssignBlockTypes();
@@ -144,6 +159,11 @@ Chunk::Chunk(Coordinates coord)
 
 	GenerateTerrain();
 	GenerateChunkMesh();
+}
+
+Chunk::~Chunk() {
+	delete chunkMesh;
+	delete[] blocks;
 }
 
 void Chunk::Update()

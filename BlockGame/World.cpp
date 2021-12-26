@@ -5,6 +5,7 @@
 #include "ChunkLoader.h"
 #include "Chunk.h"
 
+
 void World::UpdateCamera()
 {
 	float rotationSpeed = 50.0f * window->GetTime();
@@ -21,11 +22,11 @@ void World::UpdateCamera()
 		camera->Strafe(-window->GetTime());
 }
 
-World::World(Window* inWindow)
+World::World(Window* inWindow, BlockTextureAtlas* atlas)
 {
 	window = inWindow;
 	camera = new Camera(glm::vec3(0.0f, 20.0f, 10.0f), glm::vec2(0.0f, 20.0f), 70.0f, window->GetAspectRation());
-	chunkLoader = new ChunkLoader();
+	chunkLoader = new ChunkLoader(atlas);
 	chunkLoader->GetChunk(0, 0, 0);
 	chunkLoader->GetChunk(1, 0, 0);
 	chunkLoader->GetChunk(0, 0, 1);

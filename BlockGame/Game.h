@@ -53,7 +53,7 @@ public:
 
 		window = new Window(width, height, "Game");
 		renderer = new Renderer(width, height);
-		world = new World(window);
+		world = new World(window, renderer->GetAtlas());
 	}
 
 	void StartLoop() 

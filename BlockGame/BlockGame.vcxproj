@@ -164,6 +164,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BlockGame.cpp" />
+    <ClCompile Include="BlockTextureAtlas.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Chunk.cpp" />
     <ClCompile Include="ChunkLoader.cpp" />
@@ -201,6 +202,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Block.h" />
+    <ClInclude Include="BlockTextureAtlas.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Chunk.h" />
     <ClInclude Include="ChunkLoader.h" />
@@ -210,6 +212,7 @@
     <ClInclude Include="ErrorLoger.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="EBO.h" />
+    <ClInclude Include="ImageData.h" />
     <ClInclude Include="ImageReader.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Model.h" />

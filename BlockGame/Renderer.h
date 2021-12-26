@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include "BlockTextureAtlas.h"
 
 class DataManager;
 class Camera;
@@ -22,6 +23,8 @@ private:
 
 public:
 	Renderer(int inWidth, int inHeight);
+
+	BlockTextureAtlas* GetAtlas();
 
 	void Draw(Camera* camera, std::vector<Model*> chunks);
 };

@@ -1,6 +1,7 @@
 #pragma once
 #include "Camera.h"
 #include "Model.h"
+#include "BlockTextureAtlas.h"
 
 class Window;
 class Chunk;
@@ -21,7 +22,7 @@ private:
 	void UpdateCamera();
 
 public:
-	World(Window* inWindow);
+	World(Window* inWindow, BlockTextureAtlas* atlas);
 
 	void Update();
 

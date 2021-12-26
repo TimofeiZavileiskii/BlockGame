@@ -20,7 +20,7 @@ void ErrorLoger::PushError(const std::string& title, const std::string& message)
 	std::cout << message << "\n";
 }
 
-void PushError(const std::string& title, int message)
+void ErrorLoger::PushError(const std::string& title, int message)
 {
 	std::cout << "---" << title << " reports:\n";
 	std::cout << message << "\n";

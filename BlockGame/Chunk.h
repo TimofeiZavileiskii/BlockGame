@@ -1,4 +1,5 @@
 #pragma once
+#include "BlockTextureAtlas.h"
 #include "Block.h"
 #include <set>
 
@@ -26,6 +27,7 @@ class Chunk
 	static BlockType* blockTypes;
 	Model* chunkMesh;
 	Block* blocks;
+	BlockTextureAtlas* atlas;
 	Coordinates coordinates = Coordinates(0, 0, 0);
 
 	static void AssignBlockTypes();
@@ -39,9 +41,11 @@ class Chunk
 	inline int GetArrayPos(int x, int y, int z);
 
 public:
-	Chunk(Coordinates coord);
+	Chunk(Coordinates coord, BlockTextureAtlas* atlas);
 
-	Chunk(int x, int y, int z);
+	Chunk(int x, int y, int z, BlockTextureAtlas* atlas);
+
+	~Chunk();
 
 	void Update();
 

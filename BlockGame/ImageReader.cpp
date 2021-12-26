@@ -14,11 +14,7 @@ ImageData ImageReader::ReadTga(const std::string& address)
 
 	unsigned char* image = nullptr;
 
-	std::filebuf fb;
-	if (!fb.open(address, std::ios::in)) {
-		std::cout << "file not read\n";
-	}
-	std::istream imageFile(&fb);
+	std::ifstream imageFile(address, std::ios::binary);
 
 	char* header = new char[headerLen];
 
@@ -59,9 +55,9 @@ ImageData ImageReader::ReadTga(const std::string& address)
 		{
 			for (int i = 0; i < imageWidth * imageHeight * RgbaSize; i += RgbaSize)
 			{
-				image[i] = imageFile.get();		 //Gets red colour
+				image[i + 2] = imageFile.get();	 //Gets red colour
 				image[i + 1] = imageFile.get();  //Gets blue colour
-				image[i + 2] = imageFile.get();  //Gets green colour
+				image[i] = imageFile.get();		 //Gets green colour
 				image[i + 3] = 255;				 //Sets alpha chanell
 			}
 		}

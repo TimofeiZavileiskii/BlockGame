@@ -104,6 +104,9 @@
     <ClCompile Include="ChunkLoader.cpp">
       <Filter>World\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BlockTextureAtlas.cpp">
+      <Filter>Renderer\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Renderer.h">
@@ -157,9 +160,6 @@
     <ClInclude Include="pch.h">
       <Filter>Other</Filter>
     </ClInclude>
-    <ClInclude Include="CubeMeshCreator.h">
-      <Filter>Renderer\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Chunk.h">
       <Filter>World\Header Files</Filter>
     </ClInclude>
@@ -167,6 +167,15 @@
       <Filter>World\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ChunkLoader.h">
+      <Filter>World\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BlockTextureAtlas.h">
+      <Filter>Renderer\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageData.h">
+      <Filter>Renderer\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CubeMeshCreator.h">
       <Filter>World\Header Files</Filter>
     </ClInclude>
   </ItemGroup>

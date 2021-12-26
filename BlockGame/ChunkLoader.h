@@ -2,6 +2,8 @@
 #include <map>
 #include <vector>
 
+#include "BlockTextureAtlas.h"
+
 class Chunk;
 class Model;
 struct Coordinates;
@@ -10,13 +12,13 @@ class ChunkLoader
 {
 	std::map<int, Chunk*> chunks;
 	std::vector<Model*> chunkModels;
-
+	BlockTextureAtlas* atlas;
 
 	int HashCoordinates(Coordinates coords);
 
 
 public:
-	ChunkLoader();
+	ChunkLoader(BlockTextureAtlas* atlas);
 
 	void Update();
 

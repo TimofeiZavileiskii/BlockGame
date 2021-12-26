@@ -1,7 +1,7 @@
 #pragma once
 enum BlockId
 {
-	AIR, STONE,
+	AIR, STONE, SAND, DIRT, BRICK,
 	BLOCK_ID_LENGTH
 };
 
@@ -34,7 +34,7 @@ struct Block
 		type = inType;
 	}
 
-	std::string GetTexture()
+	std::string& GetTexture()
 	{
 		return type->texture;
 	}
