@@ -1,7 +1,7 @@
 #pragma once
 enum BlockId
 {
-	AIR, STONE, SAND, DIRT, BRICK,
+	AIR, STONE, SAND, DIRT, BRICK, GRASS,
 	BLOCK_ID_LENGTH
 };
 

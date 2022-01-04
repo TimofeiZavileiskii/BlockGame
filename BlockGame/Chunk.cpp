@@ -28,6 +28,10 @@ void Chunk::GenerateTerrain()
 				{
 					blocks[GetArrayPos(i, ii, iii)] = Block(&blockTypes[BRICK]);
 				}
+				else if (ii == 6 && i == 1 && iii == 1) 
+				{
+					blocks[GetArrayPos(i, ii, iii)] = Block(&blockTypes[GRASS]);
+				}
 				else
 				{
 					blocks[GetArrayPos(i, ii, iii)] = Block(&blockTypes[AIR]);
@@ -46,7 +50,7 @@ void Chunk::AssignBlockTypes()
 	blockTypes[SAND] = BlockType(false, "Sand");
 	blockTypes[DIRT] = BlockType(false, "Dirt");
 	blockTypes[BRICK] = BlockType(false, "Bricks");
-
+	blockTypes[GRASS] = BlockType(false, "Grass");
 }
 
 void Chunk::GenerateChunkMesh()
