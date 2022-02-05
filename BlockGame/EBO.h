@@ -2,7 +2,7 @@
 
 class EBO
 {
-	int bufferSize;
+	int count;
 	unsigned int index;
 
 public:

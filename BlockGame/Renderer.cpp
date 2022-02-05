@@ -81,9 +81,9 @@ void Renderer::Draw(Camera* camera, std::vector<Model*> chunks)
 
     for (Model* model : chunks) 
     {
-        model->Bind();
         shader->SetUniformMatf4("model", glm::translate(glm::mat4(1.0f), model->GetPosition()));
-
+        
+        model->Bind();
         model->Draw();
     }
 

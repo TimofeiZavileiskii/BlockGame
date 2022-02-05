@@ -4,6 +4,7 @@
 #include <set>
 
 class Model;
+class ChunkLoader;
 
 struct Coordinates
 {
@@ -28,22 +29,26 @@ class Chunk
 	Model* chunkMesh;
 	Block* blocks;
 	BlockTextureAtlas* atlas;
+	ChunkLoader* chunkLoader;
+
 	Coordinates coordinates = Coordinates(0, 0, 0);
 
 	static void AssignBlockTypes();
 
 	void GenerateTerrain();
 
-	void GenerateChunkMesh();
-
 	inline int GetArrayPos(Coordinates coordinates);
 
 	inline int GetArrayPos(int x, int y, int z);
 
 public:
-	Chunk(Coordinates coord, BlockTextureAtlas* atlas);
+	void GenerateChunkMesh();
 
-	Chunk(int x, int y, int z, BlockTextureAtlas* atlas);
+	Block* GetBlock(Coordinates coords);
+
+	Chunk(Coordinates coord, BlockTextureAtlas* atlas, ChunkLoader* chunkLoader);
+
+	Chunk(int x, int y, int z, BlockTextureAtlas* atlas, ChunkLoader* chunkLoader);
 
 	~Chunk();
 

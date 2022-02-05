@@ -110,6 +110,9 @@
     <ClCompile Include="PerlinNoise.cpp">
       <Filter>Renderer\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CubeMeshCreator.cpp">
+      <Filter>Renderer\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Renderer.h">
@@ -178,10 +181,10 @@
     <ClInclude Include="ImageData.h">
       <Filter>Renderer\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CubeMeshCreator.h">
-      <Filter>World\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PerlinNoise.h">
+      <Filter>Renderer\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CubeMeshCreator.h">
       <Filter>Renderer\Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -2,7 +2,7 @@
 #include "ChunkLoader.h"
 #include "Chunk.h"
 #include "Model.h"
-
+#include "Camera.h"
 
 int ChunkLoader::HashCoordinates(Coordinates coords)
 {
@@ -26,13 +26,9 @@ void ChunkLoader::Update()
 	Coordinates currentChunkPos = Coordinates((int)floor(position.x / chunk_dim), (int)floor(position.y / chunk_dim), (int)floor(position.z / chunk_dim));
 	
 	for (int i = -chunkGenRadious; i < chunkGenRadious + 1; i++)
-	{
 		for (int ii = -chunkGenRadious; ii < chunkGenRadious + 1; ii++)
-		{
-			for(int iii = - chunkGenRadious; iii < chunkGenRadious + 1; iii++)
-			GetChunk(Coordinates(currentChunkPos.x + i, currentChunkPos.y + iii, currentChunkPos.z + ii));
-		}
-	}
+			for (int iii = -chunkGenRadious; iii < chunkGenRadious + 1; iii++)
+				GenerateChunk(Coordinates(currentChunkPos.x + i, currentChunkPos.y + iii, currentChunkPos.z + ii));
 
 	for(const auto& [key, value] : chunks) 
 	{
@@ -40,9 +36,13 @@ void ChunkLoader::Update()
 	}
 }
 
-std::vector<Model*>& ChunkLoader::GetChunkModels()
+std::vector<Model*>& ChunkLoader::GetChunkModels(Camera* camera)
 {
 	chunkModels.clear();
+
+	glm::vec3 dir = camera->GetDirection();
+	float aspect = camera->GetAspectRatio();
+	float fov = camera->GetFov();
 
 	for (const std::pair<int, Chunk*>& chunkPair : chunks)
 	{
@@ -54,15 +54,34 @@ std::vector<Model*>& ChunkLoader::GetChunkModels()
 
 Chunk* ChunkLoader::GetChunk(Coordinates coords)
 {
-	if (chunks.find(HashCoordinates(coords)) == chunks.end()) 
-	{
-		chunks[HashCoordinates(coords)] = new Chunk(coords, atlas);
-	}
+	int hash = HashCoordinates(coords);
 	
-	return chunks[HashCoordinates(coords)];
+	if (chunks.find(hash) != chunks.end())
+	{
+		return chunks[hash];
+	}
+	else
+	{
+		return nullptr;
+	}
 }
 
 Chunk* ChunkLoader::GetChunk(int x, int y, int z)
 {
 	return GetChunk(Coordinates(x, y, z));
+}
+
+bool ChunkLoader::GenerateChunk(int x, int y, int z)
+{
+	return GenerateChunk(Coordinates(x, y, z));
+}
+
+bool ChunkLoader::GenerateChunk(Coordinates coords)
+{
+	bool output = false;
+	if (output = chunks.find(HashCoordinates(coords)) == chunks.end())
+	{
+		chunks[HashCoordinates(coords)] = new Chunk(coords, atlas, this);
+	}
+	return output;
 }

@@ -9,6 +9,7 @@ private:
 	float fov;
 	float aspectRatio;
 	float speed;
+	float viewDistance;
 
 	glm::vec3 cameraFront;
 	glm::vec2 rotation;
@@ -18,6 +19,14 @@ private:
 
 public:
 	Camera(glm::vec3 inPosition, glm::vec2 inRotation, float inFov, float inAspectRatio);
+
+	float GetFov();
+
+	float GetAspectRatio();
+
+	float GetViewDistance();
+
+	glm::vec3 GetDirection();
 
 	void Rotate(glm::vec2 rotationChange);
 

@@ -4,13 +4,15 @@
 #include "CubeMeshCreator.h"
 #include "ChunkLoader.h"
 #include "Chunk.h"
-
+#include <iostream>
 
 void World::UpdateCamera()
 {
 	float rotationSpeed = 50.0f * window->GetTime();
 	glm::vec2 offset = window->GetCursorOffset();
 	camera->Rotate(glm::vec2(offset.x *= rotationSpeed, offset.y *= rotationSpeed));
+	
+	std::cout << glm::to_string(camera->GetPosition()) << "\n";
 
 	if (window->GetInput(W))
 		camera->Move(window->GetTime());
@@ -27,15 +29,15 @@ World::World(Window* inWindow, BlockTextureAtlas* atlas)
 	window = inWindow;
 	camera = new Camera(glm::vec3(0.0f, 20.0f, 10.0f), glm::vec2(0.0f, 20.0f), 70.0f, window->GetAspectRation());
 	chunkLoader = new ChunkLoader(atlas, (Entity*)camera);
-	chunkLoader->GetChunk(0, 0, 0);
-	chunkLoader->GetChunk(1, 0, 0);
-	chunkLoader->GetChunk(0, 0, 1);
-	chunkLoader->GetChunk(0, 0, -1);
-	chunkLoader->GetChunk(-1, 0, 0);
-	chunkLoader->GetChunk(1, 0, 1);
-	chunkLoader->GetChunk(-1, 0, 1);
-	chunkLoader->GetChunk(1, 0, -1);
-	chunkLoader->GetChunk(-1, 0, -1);
+	chunkLoader->GenerateChunk(0, 0, 0);
+	chunkLoader->GenerateChunk(1, 0, 0);
+	chunkLoader->GenerateChunk(0, 0, 1);
+	chunkLoader->GenerateChunk(0, 0, -1);
+	chunkLoader->GenerateChunk(-1, 0, 0);
+	chunkLoader->GenerateChunk(1, 0, 1);
+	chunkLoader->GenerateChunk(-1, 0, 1);
+	chunkLoader->GenerateChunk(1, 0, -1);
+	chunkLoader->GenerateChunk(-1, 0, -1);
 
 	Update();
 }
@@ -55,5 +57,5 @@ Camera* World::GetCamera()
 
 std::vector<Model*>& World::GetChunkModels()
 {
-	return chunkLoader->GetChunkModels();
+	return chunkLoader->GetChunkModels(camera);
 }

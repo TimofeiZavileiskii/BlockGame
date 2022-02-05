@@ -8,6 +8,7 @@
 class Chunk;
 class Model;
 struct Coordinates;
+class Camera;
 
 class ChunkLoader
 {
@@ -24,11 +25,14 @@ public:
 
 	void Update();
 
-	std::vector<Model*>& GetChunkModels();
+	std::vector<Model*>& GetChunkModels(Camera* camera);
 
 	Chunk* GetChunk(Coordinates coords);
 
 	Chunk* GetChunk(int x, int y, int z);
 
+	bool GenerateChunk(Coordinates coords);
+
+	bool GenerateChunk(int x, int y, int z);
 };
 

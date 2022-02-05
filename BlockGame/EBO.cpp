@@ -4,7 +4,8 @@
 
 EBO::EBO(unsigned int* input, int count)
 {
-	bufferSize = count * sizeof(unsigned int);
+	this->count = count;
+	int bufferSize = count * sizeof(unsigned int);
 
 	glGenBuffers(1, &index);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index);
@@ -18,7 +19,7 @@ EBO::~EBO()
 
 int EBO::GetSize() const
 {
-	return bufferSize;
+	return count;
 }
 
 int EBO::GetIndex() const
