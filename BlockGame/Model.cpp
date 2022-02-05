@@ -35,10 +35,5 @@ void Model::Bind()
 
 void Model::Draw()
 {
-	int size = 0;
-	glGetBufferParameteriv(GL_ELEMENT_ARRAY_BUFFER, GL_BUFFER_SIZE, &size);
-	if (indicies->GetSize() * 4 != size && indicies->GetSize() != 0)
-		std::cout << "Oh No!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << "\n";
-
 	glDrawElements(GL_TRIANGLES, indicies->GetSize(), GL_UNSIGNED_INT, 0);
 }

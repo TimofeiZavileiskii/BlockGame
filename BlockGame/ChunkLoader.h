@@ -12,12 +12,11 @@ class Camera;
 
 class ChunkLoader
 {
-	std::map<int, Chunk*> chunks;
+	std::map<Coordinates, Chunk*> chunks;
 	std::vector<Model*> chunkModels;
 	BlockTextureAtlas* atlas;
 	Entity* observer;
 
-	int HashCoordinates(Coordinates coords);
 
 
 public:

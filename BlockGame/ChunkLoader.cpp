@@ -4,14 +4,11 @@
 #include "Model.h"
 #include "Camera.h"
 
-int ChunkLoader::HashCoordinates(Coordinates coords)
-{
-	return coords.x + coords.y * 100 + coords.z * 1000;
-}
+
 
 ChunkLoader::ChunkLoader(BlockTextureAtlas* atlas, Entity* observer)
 {
-	chunks = std::map<int, Chunk*>();
+	chunks = std::map<Coordinates, Chunk*>();
 	chunkModels = std::vector<Model*>();
 	this->atlas = atlas;
 	this->observer = observer;
@@ -44,7 +41,7 @@ std::vector<Model*>& ChunkLoader::GetChunkModels(Camera* camera)
 	float aspect = camera->GetAspectRatio();
 	float fov = camera->GetFov();
 
-	for (const std::pair<int, Chunk*>& chunkPair : chunks)
+	for (const std::pair<Coordinates, Chunk*>& chunkPair : chunks)
 	{
 		chunkModels.push_back(chunkPair.second->GetChunkModel());
 	}
@@ -53,12 +50,10 @@ std::vector<Model*>& ChunkLoader::GetChunkModels(Camera* camera)
 }
 
 Chunk* ChunkLoader::GetChunk(Coordinates coords)
-{
-	int hash = HashCoordinates(coords);
-	
-	if (chunks.find(hash) != chunks.end())
+{	
+	if (chunks.find(coords) != chunks.end())
 	{
-		return chunks[hash];
+		return chunks[coords];
 	}
 	else
 	{
@@ -79,9 +74,9 @@ bool ChunkLoader::GenerateChunk(int x, int y, int z)
 bool ChunkLoader::GenerateChunk(Coordinates coords)
 {
 	bool output = false;
-	if (output = chunks.find(HashCoordinates(coords)) == chunks.end())
+	if (output = chunks.find(coords) == chunks.end())
 	{
-		chunks[HashCoordinates(coords)] = new Chunk(coords, atlas, this);
+		chunks[coords] = new Chunk(coords, atlas, this);
 	}
 	return output;
 }

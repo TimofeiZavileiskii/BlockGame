@@ -12,6 +12,28 @@ struct Coordinates
 	int y;
 	int z;
 
+	inline int HashCoordinates() const
+	{
+		return x + 100 * y + 1000 * z;
+	}
+
+	friend bool operator<(const Coordinates &lhs, const Coordinates &rhs)
+	{
+		if (lhs.x != rhs.x) 
+		{
+			return lhs.x < rhs.x;
+		}
+		else if (lhs.y != rhs.y) 
+		{
+			return lhs.y < rhs.y;
+		}
+		else
+		{
+			return lhs.z < rhs.z;
+		}
+		
+	}
+
 	Coordinates(int inX, int inY, int inZ)
 	{
 		x = inX;
