@@ -107,6 +107,9 @@
     <ClCompile Include="BlockTextureAtlas.cpp">
       <Filter>Renderer\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PerlinNoise.cpp">
+      <Filter>Renderer\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Renderer.h">
@@ -177,6 +180,9 @@
     </ClInclude>
     <ClInclude Include="CubeMeshCreator.h">
       <Filter>World\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PerlinNoise.h">
+      <Filter>Renderer\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

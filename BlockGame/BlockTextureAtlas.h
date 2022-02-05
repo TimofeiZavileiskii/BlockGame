@@ -2,6 +2,7 @@
 #include "Texture.h"
 #include "ImageData.h"
 
+
 enum TextureCorners
 {
 	LEFTUP,

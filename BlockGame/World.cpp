@@ -26,7 +26,7 @@ World::World(Window* inWindow, BlockTextureAtlas* atlas)
 {
 	window = inWindow;
 	camera = new Camera(glm::vec3(0.0f, 20.0f, 10.0f), glm::vec2(0.0f, 20.0f), 70.0f, window->GetAspectRation());
-	chunkLoader = new ChunkLoader(atlas);
+	chunkLoader = new ChunkLoader(atlas, (Entity*)camera);
 	chunkLoader->GetChunk(0, 0, 0);
 	chunkLoader->GetChunk(1, 0, 0);
 	chunkLoader->GetChunk(0, 0, 1);

@@ -2,35 +2,25 @@
 #include "Chunk.h"
 #include "Model.h"
 #include "CubeMeshCreator.h"
+#include "PerlinNoise.h"
 
 BlockType* Chunk::blockTypes;
 
 void Chunk::GenerateTerrain()
 {
 	blocks = new Block[chunkSize];
+	PerlinNoise noise = PerlinNoise();
 
 	for (int i = 0; i < CHUNK_DIMENSION; i++) {
 		for (int ii = 0; ii < CHUNK_DIMENSION; ii++) {
 			for (int iii = 0; iii < CHUNK_DIMENSION; iii++) {
-				if (ii == 0)
+				
+				float height = ((float)(ii + CHUNK_DIMENSION * coordinates.y) + 0.01) / (float)40;
+				float x = ((float)(i + CHUNK_DIMENSION * coordinates.x) + 0.01) / (float)40;
+				float y = ((float)(iii + CHUNK_DIMENSION * coordinates.z) + 0.01) / (float)40;
+				if (height <  0.2 * (sin(x * 5) + sin(y * 5))) 
 				{
 					blocks[GetArrayPos(i, ii, iii)] = Block(&blockTypes[STONE]);
-				}
-				else if (ii == 1)
-				{
-					blocks[GetArrayPos(i, ii, iii)] = Block(&blockTypes[SAND]);
-				}
-				else if (ii == 2)
-				{
-					blocks[GetArrayPos(i, ii, iii)] = Block(&blockTypes[DIRT]);
-				}
-				else if (ii == 3)
-				{
-					blocks[GetArrayPos(i, ii, iii)] = Block(&blockTypes[BRICK]);
-				}
-				else if (ii == 6 && i == 1 && iii == 1) 
-				{
-					blocks[GetArrayPos(i, ii, iii)] = Block(&blockTypes[GRASS]);
 				}
 				else
 				{
@@ -66,56 +56,32 @@ void Chunk::GenerateChunkMesh()
 				if (!blocks[GetArrayPos(i, ii, iii)].GetTransperency())
 				{
 					int arrayPos = GetArrayPos(i, ii, iii);
-					if (ii - 1 < 0)
-					{
-						cubeMesh.AddBottomFace(i, ii, iii, blocks[arrayPos].GetTexture());
-					}
-					else if (blocks[GetArrayPos(i, ii - 1, iii)].GetTransperency())
+					if (ii - 1 < 0 || blocks[GetArrayPos(i, ii - 1, iii)].GetTransperency())
 					{
 						cubeMesh.AddBottomFace(i, ii, iii, blocks[arrayPos].GetTexture());
 					}
 
-					if (ii + 1 > CHUNK_DIMENSION - 1)
-					{
-						cubeMesh.AddTopFace(i, ii, iii, blocks[arrayPos].GetTexture());
-					}
-					else if (blocks[GetArrayPos(i, ii + 1, iii)].GetTransperency())
+					if (ii + 1 > CHUNK_DIMENSION - 1 || blocks[GetArrayPos(i, ii + 1, iii)].GetTransperency())
 					{
 						cubeMesh.AddTopFace(i, ii, iii, blocks[arrayPos].GetTexture());
 					}
 
-					if (i - 1 < 0)
-					{
-						cubeMesh.AddLeftFace(i, ii, iii, blocks[arrayPos].GetTexture());
-					}
-					else if (blocks[GetArrayPos(i - 1, ii, iii)].GetTransperency())
+					if (i - 1 < 0 || blocks[GetArrayPos(i - 1, ii, iii)].GetTransperency())
 					{
 						cubeMesh.AddLeftFace(i, ii, iii, blocks[arrayPos].GetTexture());
 					}
 
-					if (i + 1 > CHUNK_DIMENSION - 1)
-					{
-						cubeMesh.AddRightFace(i, ii, iii, blocks[arrayPos].GetTexture());
-					}
-					else if (blocks[GetArrayPos(i + 1, ii, iii)].GetTransperency())
+					if (i + 1 > CHUNK_DIMENSION - 1 || blocks[GetArrayPos(i + 1, ii, iii)].GetTransperency())
 					{
 						cubeMesh.AddRightFace(i, ii, iii, blocks[arrayPos].GetTexture());
 					}
 
-					if (iii - 1 < 0)
-					{
-						cubeMesh.AddFrontFace(i, ii, iii, blocks[arrayPos].GetTexture());
-					}
-					else if (blocks[GetArrayPos(i, ii, iii - 1)].GetTransperency())
+					if (iii - 1 < 0 || blocks[GetArrayPos(i, ii, iii - 1)].GetTransperency())
 					{
 						cubeMesh.AddFrontFace(i, ii, iii, blocks[arrayPos].GetTexture());
 					}
 
-					if (iii + 1 > CHUNK_DIMENSION - 1)
-					{
-						cubeMesh.AddBackFace(i, ii, iii, blocks[arrayPos].GetTexture());
-					}
-					else if (blocks[GetArrayPos(i, ii, iii + 1)].GetTransperency())
+					if (iii + 1 > CHUNK_DIMENSION - 1 || blocks[GetArrayPos(i, ii, iii + 1)].GetTransperency())
 					{
 						cubeMesh.AddBackFace(i, ii, iii, blocks[arrayPos].GetTexture());
 					}
