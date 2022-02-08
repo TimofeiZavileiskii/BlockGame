@@ -107,10 +107,10 @@
     <ClCompile Include="BlockTextureAtlas.cpp">
       <Filter>Renderer\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PerlinNoise.cpp">
+    <ClCompile Include="CubeMeshCreator.cpp">
       <Filter>Renderer\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CubeMeshCreator.cpp">
+    <ClCompile Include="Noise.cpp">
       <Filter>Renderer\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -181,10 +181,10 @@
     <ClInclude Include="ImageData.h">
       <Filter>Renderer\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PerlinNoise.h">
+    <ClInclude Include="CubeMeshCreator.h">
       <Filter>Renderer\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CubeMeshCreator.h">
+    <ClInclude Include="Noise.h">
       <Filter>Renderer\Header Files</Filter>
     </ClInclude>
   </ItemGroup>

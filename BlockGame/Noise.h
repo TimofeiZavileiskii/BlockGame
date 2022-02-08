@@ -1,6 +1,6 @@
 #pragma once
 
-class PerlinNoise
+class Noise
 {
 	static const int arrSize = 512;
 	static const int randomArray[arrSize];
@@ -13,8 +13,10 @@ class PerlinNoise
 
 
 public:
-	PerlinNoise() { }
+	Noise() { }
 
 	float Sample(float x, float y);
+
+	float SampleOctaves(float x, float y, int octaves, float distribution);
 };
 

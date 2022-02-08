@@ -4,11 +4,11 @@
 
 class CubeMeshCreator
 {
-public:
 	std::vector<float> vertecies;
 	std::vector<unsigned int> indicies;
-
+	
 	BlockTextureAtlas* atlas;
+
 
 	int totalVertecies;
 	int totalIndicies;
@@ -20,6 +20,8 @@ public:
 		vertecies.push_back(z);
 		vertecies.push_back(u);
 		vertecies.push_back(v);
+
+		totalVertecies++;
 	}
 
 	void AddChunkIndex(unsigned int i1, unsigned int i2, unsigned int i3)
@@ -27,8 +29,9 @@ public:
 		indicies.push_back(i1);
 		indicies.push_back(i2);
 		indicies.push_back(i3);
-	}
 
+		totalIndicies += 3;
+	}
 
 public:
 	float* GetVertexData() 
@@ -62,16 +65,14 @@ public:
 		totalIndicies = 0;
 	}
 
-	void AddChunkIndexFront(int totalVertecies)
+	inline void AddChunkIndexFront()
 	{
-
-		AddChunkIndex(totalVertecies, totalVertecies + 1, totalVertecies + 2);
-		AddChunkIndex(totalVertecies, totalVertecies + 2, totalVertecies + 3);
+		AddChunkIndex(totalVertecies + 1, totalVertecies, totalVertecies + 2);
+		AddChunkIndex(totalVertecies + 2, totalVertecies, totalVertecies + 3);
 	}
 
-	void AddChunkIndexBack(int totalVertecies)
+	inline void AddChunkIndexBack()
 	{
-
 		AddChunkIndex(totalVertecies, totalVertecies + 2, totalVertecies + 1);
 		AddChunkIndex(totalVertecies, totalVertecies + 3, totalVertecies + 2);
 	}
@@ -88,10 +89,7 @@ public:
 		AddChunkVertex(x + 1, y + 1, z, TexCoordinates(name, RIGHTUP, FRONT).x, TexCoordinates(name, RIGHTUP, FRONT).y);
 		AddChunkVertex(x, y + 1, z, TexCoordinates(name, LEFTUP, FRONT).x, TexCoordinates(name, LEFTUP, FRONT).y);
 
-		AddChunkIndexBack(totalVertecies);
-
-		totalVertecies += 4;
-		totalIndicies += 6;
+		AddChunkIndexBack();
 	}
 
 	void AddBackFace(float x, float y, float z, std::string& name)
@@ -101,10 +99,7 @@ public:
 		AddChunkVertex(x + 1, y + 1, z + 1, TexCoordinates(name, RIGHTUP, BACK).x, TexCoordinates(name, RIGHTUP, BACK).y);
 		AddChunkVertex(x, y + 1, z + 1, TexCoordinates(name, LEFTUP, BACK).x, TexCoordinates(name, LEFTUP, BACK).y);
 
-		AddChunkIndexFront(totalVertecies);
-
-		totalVertecies += 4;
-		totalIndicies += 6;
+		AddChunkIndexFront();
 	}
 
 	void AddTopFace(float x, float y, float z, std::string& name)
@@ -114,9 +109,7 @@ public:
 		AddChunkVertex(x + 1, y + 1, z + 1, TexCoordinates(name, RIGHTUP, TOP).x, TexCoordinates(name, RIGHTUP, TOP).y);
 		AddChunkVertex(x, y + 1, z + 1, TexCoordinates(name, LEFTUP, TOP).x, TexCoordinates(name, LEFTUP, TOP).y);
 
-		AddChunkIndexBack(totalVertecies);
-		totalVertecies += 4;
-		totalIndicies += 6;
+		AddChunkIndexBack();
 	}
 
 	void AddBottomFace(float x, float y, float z, std::string& name)
@@ -126,10 +119,7 @@ public:
 		AddChunkVertex(x + 1, y, z + 1, TexCoordinates(name, RIGHTUP, BOTTOM).x, TexCoordinates(name, RIGHTUP, BOTTOM).y);
 		AddChunkVertex(x, y, z + 1, TexCoordinates(name, LEFTUP, BOTTOM).x, TexCoordinates(name, LEFTUP, BOTTOM).y);
 
-		AddChunkIndexFront(totalVertecies);
-
-		totalVertecies += 4;
-		totalIndicies += 6;
+		AddChunkIndexFront();
 	}
 
 	void AddLeftFace(float x, float y, float z, std::string& name)
@@ -140,10 +130,7 @@ public:
 		AddChunkVertex(x, y + 1, z + 1, TexCoordinates(name, LEFTUP, LEFT).x, TexCoordinates(name, LEFTUP, LEFT).y);
 		AddChunkVertex(x, y, z + 1, TexCoordinates(name, LEFTDOWN, LEFT).x, TexCoordinates(name, LEFTDOWN, LEFT).y);
 
-		AddChunkIndexBack(totalVertecies);
-
-		totalVertecies += 4;
-		totalIndicies += 6;
+		AddChunkIndexBack();
 	}
 
 
@@ -154,10 +141,7 @@ public:
 		AddChunkVertex(x + 1, y + 1, z + 1, TexCoordinates(name, LEFTUP, RIGHT).x, TexCoordinates(name, LEFTUP, RIGHT).y);
 		AddChunkVertex(x + 1, y, z + 1, TexCoordinates(name, LEFTDOWN, RIGHT).x, TexCoordinates(name, LEFTDOWN, RIGHT).y);
 
-		AddChunkIndexFront(totalVertecies);
-
-		totalVertecies += 4;
-		totalIndicies += 6;
+		AddChunkIndexFront();
 	}
 
 

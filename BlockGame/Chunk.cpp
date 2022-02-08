@@ -2,7 +2,7 @@
 #include "Chunk.h"
 #include "Model.h"
 #include "CubeMeshCreator.h"
-#include "PerlinNoise.h"
+#include "Noise.h"
 #include "ChunkLoader.h"
 #include <iostream>
 
@@ -11,23 +11,33 @@ BlockType* Chunk::blockTypes;
 void Chunk::GenerateTerrain()
 {
 	blocks = new Block[chunkSize];
-	PerlinNoise noise = PerlinNoise();
+	Noise noise = Noise();
 
 	for (int i = 0; i < CHUNK_DIMENSION; i++) {
 		for (int ii = 0; ii < CHUNK_DIMENSION; ii++) {
 			for (int iii = 0; iii < CHUNK_DIMENSION; iii++) {
-				/*
-				float height = ((float)(ii + CHUNK_DIMENSION * coordinates.y) + 0.01) / (float)40;
-				float x = ((float)(i + CHUNK_DIMENSION * coordinates.x) + 0.01) / (float)40;
-				float y = ((float)(iii + CHUNK_DIMENSION * coordinates.z) + 0.01) / (float)40;
-				*/
-				if (ii + CHUNK_DIMENSION * coordinates.y < floor(10.0f* (sin((float)(i+coordinates.x * CHUNK_DIMENSION) / 30.0f)
-					+ sin((float)(iii + coordinates.z * CHUNK_DIMENSION) / 50.0f))))
-				{
+				int height = ii + CHUNK_DIMENSION * coordinates.y;
+				int realX = i + coordinates.x * CHUNK_DIMENSION;
+				int realZ = iii + coordinates.z * CHUNK_DIMENSION;
+
+				
+				float surface = 20.0f * noise.Sample(realX * 0.03f + 0.08f, realZ * 0.03f + 0.08f);
+
+				if ((realX == -1 && realZ == 17 || realX == 2 && realZ == 17) && height == 9) {
+					std::cout << surface << "\n";
+					std::cout <<  noise.SampleOctaves(realX * 0.03f + 0.08f, realZ * 0.03f + 0.08f, 4, 0.5) << "\n";
+				}
+
+				if (height < surface){
 					blocks[GetArrayPos(i, ii, iii)] = Block(&blockTypes[STONE]);
 				}
-				else
-				{
+				else if (height - 1< surface){
+					blocks[GetArrayPos(i, ii, iii)] = Block(&blockTypes[DIRT]);
+				}
+				else if (height - 2 < surface) {
+					blocks[GetArrayPos(i, ii, iii)] = Block(&blockTypes[GRASS]);
+				}
+				else{
 					blocks[GetArrayPos(i, ii, iii)] = Block(&blockTypes[AIR]);
 				}
 			}
@@ -50,111 +60,53 @@ void Chunk::AssignBlockTypes()
 void Chunk::GenerateChunkMesh()
 {
 	CubeMeshCreator cubeMesh = CubeMeshCreator(atlas);
-	if (coordinates.x == 3 && coordinates.y == 0 && coordinates.z == 2)
-	{
-		std::cout << "Here";
-	}
+
+
 	for (int i = 0; i < CHUNK_DIMENSION; i++)
-	{
 		for (int ii = 0; ii < CHUNK_DIMENSION; ii++)
-		{
 			for (int iii = 0; iii < CHUNK_DIMENSION; iii++)
-			{
-				if (coordinates.x == -3 && coordinates.y == 0 && coordinates.z == 2 && i == 1 && ii == 8 && iii == 31)
-				{
-
-					std::cout << "(" << coordinates.x * CHUNK_DIMENSION + i << 
-						", " << coordinates.y * CHUNK_DIMENSION + ii << ", " << coordinates.z * CHUNK_DIMENSION + iii <<")";
-					std::cout << "Here";
-				}
-
 				if (!blocks[GetArrayPos(i, ii, iii)].GetTransperency())
 				{
-				
 					int arrayPos = GetArrayPos(i, ii, iii);
 					
-					if (ii - 1 < 0 )
+					if (ii - 1 < 0 || 
+						blocks[GetArrayPos(i, ii - 1, iii)].GetTransperency())
 					{	
 						cubeMesh.AddBottomFace(i, ii, iii, blocks[arrayPos].GetTexture());
 					}
-					else if (blocks[GetArrayPos(i, ii - 1, iii)].GetTransperency())
-					{
-						cubeMesh.AddBottomFace(i, ii, iii, blocks[arrayPos].GetTexture());
-					}
 
-					if (ii + 1 > CHUNK_DIMENSION - 1)
-					{
-						cubeMesh.AddTopFace(i, ii, iii, blocks[arrayPos].GetTexture());
-					}
-					else if (blocks[GetArrayPos(i, ii + 1, iii)].GetTransperency()) 
+					if (ii + 1 > CHUNK_DIMENSION - 1 || 
+						blocks[GetArrayPos(i, ii + 1, iii)].GetTransperency())
 					{
 						cubeMesh.AddTopFace(i, ii, iii, blocks[arrayPos].GetTexture());
 					}
 
-					if (i - 1 < 0)
-					{
-						cubeMesh.AddLeftFace(i, ii, iii, blocks[arrayPos].GetTexture());
-					}
-					else if (blocks[GetArrayPos(i - 1, ii, iii)].GetTransperency())
+					if (i - 1 < 0 || 
+						blocks[GetArrayPos(i - 1, ii, iii)].GetTransperency())
 					{
 						cubeMesh.AddLeftFace(i, ii, iii, blocks[arrayPos].GetTexture());
 					}
 
-					if (i + 1 > CHUNK_DIMENSION - 1)
-					{
-						cubeMesh.AddRightFace(i, ii, iii, blocks[arrayPos].GetTexture());
-					}
-					else if (blocks[GetArrayPos(i + 1, ii, iii)].GetTransperency())
+					if (i + 1 > CHUNK_DIMENSION - 1 || 
+						blocks[GetArrayPos(i + 1, ii, iii)].GetTransperency())
 					{
 						cubeMesh.AddRightFace(i, ii, iii, blocks[arrayPos].GetTexture());
 					}
 
-					if (iii - 1 < 0)
-					{
-						cubeMesh.AddFrontFace(i, ii, iii, blocks[arrayPos].GetTexture());
-					}
-					else if (blocks[GetArrayPos(i, ii, iii - 1)].GetTransperency())
+					if (iii - 1 < 0 || 
+						blocks[GetArrayPos(i, ii, iii - 1)].GetTransperency())
 					{
 						cubeMesh.AddFrontFace(i, ii, iii, blocks[arrayPos].GetTexture());
 					}
 
-					if (iii + 1 > CHUNK_DIMENSION - 1)
+					if (iii + 1 > CHUNK_DIMENSION - 1 || 
+						blocks[GetArrayPos(i, ii, iii + 1)].GetTransperency())
 					{
 						cubeMesh.AddBackFace(i, ii, iii, blocks[arrayPos].GetTexture());
 					}
-					else if (blocks[GetArrayPos(i, ii, iii + 1)].GetTransperency())
-					{
-						cubeMesh.AddBackFace(i, ii, iii, blocks[arrayPos].GetTexture());
-					}
-					
-				}
-			}
-		}
-	}
 	
-	/*
-	if (coordinates.x == -3 && coordinates.y == 0 && coordinates.z == 2)
-	{
-		int count = 0;
-		
-		std::cout << count << ": ";
-
-		int i = 0;
-		for (float f : cubeMesh.indicies) {
-			std::cout << f << ", ";
-			i++;
-			if (i == 3) {
-				count++;
-				std::cout << "\n" << count << ": ";
-				i = 0;
-			}
-		}
-
-		std::cout << "Here";
-	}*/
-
-
-
+				}
+	
 	std::vector<VaoLayoutElement> layout = std::vector<VaoLayoutElement>();
 	layout.push_back(VaoLayoutElement(FLOAT, 3, false));
 	layout.push_back(VaoLayoutElement(FLOAT, 2, false));
@@ -162,10 +114,7 @@ void Chunk::GenerateChunkMesh()
 	VBO* vbo = new VBO(cubeMesh.GetVertexData(), cubeMesh.GetVertexCount(), 5);
 	VAO* vao = new VAO(vbo, layout);
 	EBO* ebo = new EBO(cubeMesh.GetIndexData(), cubeMesh.GetIndexCount());
-	int size = 0;
 
-	//if (vbo->GetSize() / 4 != cubeMesh.GetIndexCount() / 6)
-		//
 
 	delete chunkMesh;
 	chunkMesh = new Model(vao, ebo, glm::vec3(coordinates.x * CHUNK_DIMENSION, coordinates.y * CHUNK_DIMENSION, 

@@ -1,8 +1,8 @@
 #include "pch.h"
-#include "PerlinNoise.h"
+#include "Noise.h"
 
 
-const int PerlinNoise::randomArray[] = 
+const int Noise::randomArray[] = 
 		{ 151, 160, 137, 91, 90, 15,	   //A randomly arranged array of numbers from 0-255 repeated.
 		131, 13, 201, 95, 96, 53, 194, 233, 7, 225, 140, 36, 103, 30, 69, 142, 8, 99, 37, 240, 21, 10, 23,
 		190, 6, 148, 247, 120, 234, 75, 0, 26, 197, 62, 94, 252, 219, 203, 117, 35, 11, 32, 57, 177, 33,
@@ -31,19 +31,18 @@ const int PerlinNoise::randomArray[] =
 		138, 236, 205, 93, 222, 114, 67, 29, 24, 72, 243, 141, 128, 195, 78, 66, 215, 61, 156, 180
 	};
 
-float PerlinNoise::fade(float x)
+float Noise::fade(float x)
 {
 	return x * x * x * (10 + x * (x * 6 - 15));
 }
 
-float PerlinNoise::linear(float a, float b, float frac)
+float Noise::linear(float a, float b, float frac)
 {
 	return a + frac * (b - a);
 }
 
-float PerlinNoise::gradient(float x, float y, int hash)
-{
-	int output = 0;
+float Noise::gradient(float x, float y, int hash){
+	float output = 0;
 	switch (hash & 3)
 	{
 	case 0:
@@ -53,19 +52,19 @@ float PerlinNoise::gradient(float x, float y, int hash)
 		output = -x + y;
 		break;
 	case 2:
-		output = x + -y;
+		output = -x + -y;
 		break;
 	case 3:
-		output = -x - y;
+		output = x - y;
 		break;
 	}
 	return output;
 }
 
-float PerlinNoise::Sample(float x, float y)
+float Noise::Sample(float x, float y)
 {
-	int squareX = (int)x & 255;
-	int squareY = (int)y & 255;
+	int squareX = (int)floor(x) & 255;
+	int squareY = (int)floor(y) & 255;
 
 	float distX = x - floor(x);
 	float distY = y - floor(y);
@@ -73,13 +72,31 @@ float PerlinNoise::Sample(float x, float y)
 	float u = fade(distX);
 	float v = fade(distY);
 
-	int hashAA = randomArray[randomArray[squareX] + squareY];
-	int hashBA = randomArray[randomArray[squareX + 1] + squareY];
-	int hashAB = randomArray[randomArray[squareX] + squareY + 1];
-	int hashBB = randomArray[randomArray[squareX + 1] + squareY + 1];
+	int bottomLeft = randomArray[randomArray[squareX] + squareY];
+	int topLeft = randomArray[randomArray[squareX] + squareY + 1];
+	int bottomRight = randomArray[randomArray[squareX + 1] + squareY];
+	int topRight = randomArray[randomArray[squareX + 1] + squareY + 1];
 	
-	float x1 = linear(gradient(distX, distY, hashAA), gradient(distX - 1, distY, hashBA), u);
-	float x2 = linear(gradient(distX, distY - 1, hashAB), gradient(distX - 1, distY - 1, hashBB), u);
+	float x1 = linear(gradient(distX, distY, bottomLeft), gradient(distX, distY - 1.0f, topLeft), v);
+	float x2 = linear(gradient(distX - 1.0f, distY, bottomRight), gradient(distX - 1.0f, distY - 1.0f, topRight), v);
 
-	return (linear(x1, x2, v) + 1) / 2;
+	return linear(x1, x2, u);
+}
+
+float Noise::SampleOctaves(float x, float y, int octaves, float distribution)
+{
+	float strength = 1.0f;
+	float output = 0.0f;
+	float frequency = 1.0f;
+	float sum = 0.0f;
+
+	for (int i = 0; i < octaves; i++) 
+	{
+		output += strength * Sample(x * frequency, y * frequency);
+		sum += strength;
+		frequency = frequency / distribution;
+		strength = strength * distribution;
+	}
+
+	return output / sum;
 }
