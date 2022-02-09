@@ -12,7 +12,7 @@ void World::UpdateCamera()
 	glm::vec2 offset = window->GetCursorOffset();
 	camera->Rotate(glm::vec2(offset.x *= rotationSpeed, offset.y *= rotationSpeed));
 	
-	std::cout << glm::to_string(camera->GetPosition()) << "\n";
+	//std::cout << glm::to_string(camera->GetPosition()) << "\n";
 
 	if (window->GetInput(W))
 		camera->Move(window->GetTime());

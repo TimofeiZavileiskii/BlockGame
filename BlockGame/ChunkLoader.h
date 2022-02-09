@@ -17,9 +17,11 @@ class ChunkLoader
 	BlockTextureAtlas* atlas;
 	Entity* observer;
 
-
-
 public:
+	bool ChunkExists(Coordinates coords);
+
+	bool ChunkExists(int x, int y, int z);
+
 	ChunkLoader(BlockTextureAtlas* atlas, Entity* observer);
 
 	void Update();

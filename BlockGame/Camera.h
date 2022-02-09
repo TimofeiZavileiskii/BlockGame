@@ -10,6 +10,7 @@ private:
 	float aspectRatio;
 	float speed;
 	float viewDistance;
+	float nearDistance;
 
 	glm::vec3 cameraFront;
 	glm::vec2 rotation;
@@ -25,6 +26,8 @@ public:
 	float GetAspectRatio();
 
 	float GetViewDistance();
+
+	float GetNearDistance();
 
 	glm::vec3 GetDirection();
 

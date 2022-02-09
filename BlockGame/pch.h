@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <algorithm>
 
 //Glm headers
 #include <glm/vec2.hpp>

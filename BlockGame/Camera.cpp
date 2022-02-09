@@ -18,6 +18,7 @@ Camera::Camera(glm::vec3 inPosition, glm::vec2 inRotation, float inFov, float in
     aspectRatio = inAspectRatio;
     speed = 20.00f;
     viewDistance = 100.0f;
+    nearDistance = 0.1f;
 
     rotation = inRotation;
 
@@ -41,9 +42,14 @@ float Camera::GetViewDistance()
     return viewDistance;
 }
 
+float Camera::GetNearDistance()
+{
+    return nearDistance;
+}
+
 glm::vec3 Camera::GetDirection()
 {
-    return GetPosition() - cameraFront;
+    return cameraFront;
 }
 
 void Camera::Move(float scalar)
@@ -86,7 +92,7 @@ glm::mat4 Camera::GetViewMatrix()
 
 glm::mat4 Camera::GetPerspectiveMatrix() 
 {
-    glm::mat4 projMat = glm::perspective(glm::radians(fov), aspectRatio, 0.1f, viewDistance);
+    glm::mat4 projMat = glm::perspective(glm::radians(fov), aspectRatio, nearDistance, viewDistance);
     
     return projMat;
 }
