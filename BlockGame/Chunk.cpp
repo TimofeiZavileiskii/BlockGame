@@ -132,7 +132,6 @@ void Chunk::GenerateChunkMesh()
 
 		chunkMesh = new Model(vao, ebo, glm::vec3(coordinates.x * CHUNK_DIMENSION, coordinates.y * CHUNK_DIMENSION,
 			coordinates.z * CHUNK_DIMENSION));
-
 	}
 	else {
 		chunkMesh = nullptr;
@@ -188,4 +187,14 @@ void Chunk::Update()
 Model* Chunk::GetChunkModel()
 {
 	return chunkMesh;
+}
+
+int Chunk::GetChunkDim()
+{
+	return CHUNK_DIMENSION;
+}
+
+Coordinates Chunk::GetCoordinates()
+{
+	return coordinates;
 }

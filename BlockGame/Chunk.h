@@ -44,7 +44,7 @@ struct Coordinates
 
 class Chunk
 {
-	const int CHUNK_DIMENSION = 32;
+	static const int CHUNK_DIMENSION = 32;
 	const int chunkSize = CHUNK_DIMENSION * CHUNK_DIMENSION * CHUNK_DIMENSION;
 
 	static BlockType* blockTypes;
@@ -77,5 +77,9 @@ public:
 	void Update();
 
 	Model* GetChunkModel();
+
+	static int GetChunkDim();
+
+	Coordinates GetCoordinates();
 };
 

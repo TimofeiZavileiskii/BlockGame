@@ -17,6 +17,10 @@ class ChunkLoader
 	BlockTextureAtlas* atlas;
 	Entity* observer;
 
+private:
+
+	bool IsInside(glm::vec3 normal, glm::vec3 normalOrigin, glm::vec3 chunkPos);
+
 public:
 	bool ChunkExists(Coordinates coords);
 
