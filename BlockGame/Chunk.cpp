@@ -14,6 +14,8 @@ void Chunk::GenerateTerrain()
 	blocks = new Block[chunkSize];
 	Noise noise = Noise();
 
+
+
 	for (int i = 0; i < CHUNK_DIMENSION; i++) {
 		for (int ii = 0; ii < CHUNK_DIMENSION; ii++) {
 			for (int iii = 0; iii < CHUNK_DIMENSION; iii++) {
@@ -38,6 +40,7 @@ void Chunk::GenerateTerrain()
 			}
 		}
 	}
+
 }
 
 void Chunk::FiniliseMesh()
