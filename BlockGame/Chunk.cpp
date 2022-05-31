@@ -4,6 +4,7 @@
 #include "CubeMeshCreator.h"
 #include "Noise.h"
 #include "ChunkLoader.h"
+#include "Coordinates.h"
 #include <iostream>
 
 BlockType* Chunk::blockTypes;
@@ -25,7 +26,7 @@ void Chunk::GenerateTerrain()
 				if (height < surface){
 					blocks[GetArrayPos(i, ii, iii)] = Block(&blockTypes[STONE]);
 				}
-				else if (height - 1< surface){
+				else if (height - 1 < surface){
 					blocks[GetArrayPos(i, ii, iii)] = Block(&blockTypes[DIRT]);
 				}
 				else if (height - 2 < surface) {
@@ -37,6 +38,41 @@ void Chunk::GenerateTerrain()
 			}
 		}
 	}
+}
+
+void Chunk::FiniliseMesh()
+{
+	std::vector<VaoLayoutElement> layout = std::vector<VaoLayoutElement>();
+	layout.push_back(VaoLayoutElement(FLOAT, 3, false));
+	layout.push_back(VaoLayoutElement(FLOAT, 2, false));
+
+	delete chunkMesh;
+
+	if (meshCreator->GetVertexCount() != 0)
+	{
+		VBO* vbo = new VBO(meshCreator->GetVertexData(), meshCreator->GetVertexCount(), 5);
+		VAO* vao = new VAO(vbo, layout);
+		EBO* ebo = new EBO(meshCreator->GetIndexData(), meshCreator->GetIndexCount());
+
+		chunkMesh = new Model(vao, ebo, glm::vec3(coordinates.x * CHUNK_DIMENSION, coordinates.y * CHUNK_DIMENSION,
+			coordinates.z * CHUNK_DIMENSION));
+	}
+	else {
+		chunkMesh = nullptr;
+	}
+	delete meshCreator;
+	meshCreator = nullptr;
+	state = FINISHED;
+}
+
+bool Chunk::NeedsFinilisation()
+{
+	return state == MODEL_GENERATED;
+}
+
+bool Chunk::IsUnprocessed()
+{
+	return state == UNROCESSED;
 }
 
 void Chunk::AssignBlockTypes()
@@ -51,10 +87,15 @@ void Chunk::AssignBlockTypes()
 	blockTypes[GRASS] = BlockType(false, "Grass");
 }
 
+void Chunk::StartProccessing()
+{
+	state = WORKED_ON;
+}
+
 void Chunk::GenerateChunkMesh()
 {
-	CubeMeshCreator cubeMesh = CubeMeshCreator(atlas);
-
+	meshCreator = new CubeMeshCreator(atlas);
+	CubeMeshCreator& cubeMesh = *meshCreator;
 
 	for (int i = 0; i < CHUNK_DIMENSION; i++)
 		for (int ii = 0; ii < CHUNK_DIMENSION; ii++)
@@ -117,25 +158,7 @@ void Chunk::GenerateChunkMesh()
 						cubeMesh.AddBackFace(i, ii, iii, blocks[arrayPos].GetTexture());
 					}
 				}
-	
-	std::vector<VaoLayoutElement> layout = std::vector<VaoLayoutElement>();
-	layout.push_back(VaoLayoutElement(FLOAT, 3, false));
-	layout.push_back(VaoLayoutElement(FLOAT, 2, false));
-
-	delete chunkMesh;
-
-	if (cubeMesh.GetVertexCount() != 0) 
-	{
-		VBO* vbo = new VBO(cubeMesh.GetVertexData(), cubeMesh.GetVertexCount(), 5);
-		VAO* vao = new VAO(vbo, layout);
-		EBO* ebo = new EBO(cubeMesh.GetIndexData(), cubeMesh.GetIndexCount());
-
-		chunkMesh = new Model(vao, ebo, glm::vec3(coordinates.x * CHUNK_DIMENSION, coordinates.y * CHUNK_DIMENSION,
-			coordinates.z * CHUNK_DIMENSION));
-	}
-	else {
-		chunkMesh = nullptr;
-	}
+	state = MODEL_GENERATED;
 }
 
 Block* Chunk::GetBlock(Coordinates coords)
@@ -146,6 +169,11 @@ Block* Chunk::GetBlock(Coordinates coords)
 inline int Chunk::GetArrayPos(int x, int y, int z)
 {
 	return x + CHUNK_DIMENSION * y + CHUNK_DIMENSION * CHUNK_DIMENSION * z;
+}
+
+ChunkState Chunk::GetState()
+{
+	return state;
 }
 
 inline int Chunk::GetArrayPos(Coordinates coord)
@@ -169,8 +197,8 @@ Chunk::Chunk(Coordinates coord, BlockTextureAtlas* atlas, ChunkLoader* chunkLoad
 
 	this->chunkLoader = chunkLoader;
 
-	GenerateTerrain();
-	GenerateChunkMesh();
+	state = UNROCESSED;
+	chunkMesh = nullptr;
 }
 
 Chunk::~Chunk() {

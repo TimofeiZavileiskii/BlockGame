@@ -168,6 +168,8 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Chunk.cpp" />
     <ClCompile Include="ChunkLoader.cpp" />
+    <ClCompile Include="ChunkThreadPool.cpp" />
+    <ClCompile Include="Coordinates.cpp" />
     <ClCompile Include="CubeMeshCreator.cpp" />
     <ClCompile Include="DataManager.cpp" />
     <ClCompile Include="Entity.cpp" />
@@ -208,6 +210,9 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Chunk.h" />
     <ClInclude Include="ChunkLoader.h" />
+    <ClInclude Include="ChunkThreadJob.h" />
+    <ClInclude Include="ChunkThreadPool.h" />
+    <ClInclude Include="Coordinates.h" />
     <ClInclude Include="CubeMeshCreator.h" />
     <ClInclude Include="DataManager.h" />
     <ClInclude Include="Entity.h" />

@@ -113,6 +113,12 @@
     <ClCompile Include="Noise.cpp">
       <Filter>Renderer\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Coordinates.cpp">
+      <Filter>World\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ChunkThreadPool.cpp">
+      <Filter>World\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Renderer.h">
@@ -186,6 +192,15 @@
     </ClInclude>
     <ClInclude Include="Noise.h">
       <Filter>Renderer\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ChunkThreadJob.h">
+      <Filter>World\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Coordinates.h">
+      <Filter>World\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ChunkThreadPool.h">
+      <Filter>World\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,45 +1,18 @@
 #pragma once
 #include "BlockTextureAtlas.h"
 #include "Block.h"
+#include "Coordinates.h"
 #include <set>
 
 class Model;
 class ChunkLoader;
+class CubeMeshCreator;
 
-struct Coordinates
-{
-	int x;
-	int y;
-	int z;
-
-	inline int HashCoordinates() const
-	{
-		return x + 100 * y + 1000 * z;
-	}
-
-	friend bool operator<(const Coordinates &lhs, const Coordinates &rhs)
-	{
-		if (lhs.x != rhs.x) 
-		{
-			return lhs.x < rhs.x;
-		}
-		else if (lhs.y != rhs.y) 
-		{
-			return lhs.y < rhs.y;
-		}
-		else
-		{
-			return lhs.z < rhs.z;
-		}
-		
-	}
-
-	Coordinates(int inX, int inY, int inZ)
-	{
-		x = inX;
-		y = inY;
-		z = inZ;
-	}
+enum ChunkState {
+	UNROCESSED,
+	WORKED_ON,
+	MODEL_GENERATED,
+	FINISHED
 };
 
 class Chunk
@@ -52,19 +25,24 @@ class Chunk
 	Block* blocks;
 	BlockTextureAtlas* atlas;
 	ChunkLoader* chunkLoader;
+	CubeMeshCreator* meshCreator;
 
-	Coordinates coordinates = Coordinates(0, 0, 0);
+	ChunkState state;
+
+	Coordinates coordinates;
 
 	static void AssignBlockTypes();
-
-	void GenerateTerrain();
 
 	inline int GetArrayPos(Coordinates coordinates);
 
 	inline int GetArrayPos(int x, int y, int z);
 
 public:
+	void GenerateTerrain();
+
 	void GenerateChunkMesh();
+
+	void FiniliseMesh();
 
 	Block* GetBlock(Coordinates coords);
 
@@ -79,6 +57,14 @@ public:
 	Model* GetChunkModel();
 
 	static int GetChunkDim();
+
+	bool IsUnprocessed();
+
+	bool NeedsFinilisation();
+
+	ChunkState GetState();
+
+	void StartProccessing();
 
 	Coordinates GetCoordinates();
 };

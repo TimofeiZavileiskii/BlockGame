@@ -1,8 +1,10 @@
 #include "pch.h"
 #include "ChunkLoader.h"
+#include "ChunkThreadJob.h"
 #include "Chunk.h"
 #include "Model.h"
 #include "Camera.h"
+#include "ChunkThreadPool.h"
 
 #include <iostream>
 
@@ -39,6 +41,7 @@ ChunkLoader::ChunkLoader(BlockTextureAtlas* atlas, Entity* observer)
 	chunkModels = std::vector<Model*>();
 	this->atlas = atlas;
 	this->observer = observer;
+	threadPool = new ChunkThreadPool(this);
 }
 
 void ChunkLoader::Update()
@@ -53,6 +56,7 @@ void ChunkLoader::Update()
 		for (int ii = -chunkGenRadious; ii < chunkGenRadious + 1; ii++)
 			for (int iii = -chunkGenRadious; iii < chunkGenRadious + 1; iii++)
 				GenerateChunk(Coordinates(currentChunkPos.x + i, currentChunkPos.y + iii, currentChunkPos.z + ii));
+	//std::cout << CountWorkingThreads() << "\n";
 
 	for(const auto& [key, value] : chunks) 
 	{
@@ -181,12 +185,32 @@ bool ChunkLoader::GenerateChunk(int x, int y, int z)
 	return GenerateChunk(Coordinates(x, y, z));
 }
 
+int ChunkLoader::CountWorkingThreads()
+{
+	return threadPool->CountWorkingThreads();
+}
+
+BlockTextureAtlas* ChunkLoader::GetTextureAtlas()
+{
+	return atlas;
+}
+
 bool ChunkLoader::GenerateChunk(Coordinates coords)
 {
 	bool output = false;
 	if (output = chunks.find(coords) == chunks.end())
 	{
 		chunks[coords] = new Chunk(coords, atlas, this);
+		ChunkThreadJob job = ChunkThreadJob(coords, GENERATE_TERRAIN);
+		threadPool->AddJob(job);
 	}
+	else if (chunks[coords]->GetState() == UNROCESSED) {
+		ChunkThreadJob job = ChunkThreadJob(coords, GENERATE_TERRAIN);
+		threadPool->AddJob(job);
+	}
+	else if (chunks[coords]->GetState() == MODEL_GENERATED) {
+		chunks[coords]->FiniliseMesh();
+	}
+	
 	return output;
 }
