@@ -47,7 +47,7 @@ ChunkLoader::ChunkLoader(BlockTextureAtlas* atlas, Entity* observer)
 void ChunkLoader::Update()
 {
 	float chunk_dim = Chunk::GetChunkDim();
-	const int chunkGenRadious = 10;
+	const int chunkGenRadious = 5;
 
 	glm::vec3 position = observer->GetPosition();
 	Coordinates currentChunkPos = Coordinates((int)floor(position.x / chunk_dim), (int)floor(position.y / chunk_dim), (int)floor(position.z / chunk_dim));
@@ -109,19 +109,21 @@ std::vector<Model*>& ChunkLoader::GetChunkModels(Camera* camera)
 	glm::vec3 normFront = glm::cross(farBottomRight - farBottomLeft, farTopLeft - farBottomLeft);
 	glm::vec3 normBack = glm::cross(nearTopLeft - nearBottomLeft, nearBottomRight - nearBottomLeft);
 
+	float chunkDimf = ((Chunk*)nullptr)->GetChunkDim();
+
 	//First find the rectanle of possible chunks	
 	float mostLeft = std::min({ nearTopLeft.x, farTopLeft.x, nearTopRight.x, farTopRight.x, 
-		nearBottomLeft.x, farBottomLeft.x, nearBottomRight.x, farBottomRight.x, }) / 32.0f;
+		nearBottomLeft.x, farBottomLeft.x, nearBottomRight.x, farBottomRight.x, }) / chunkDimf;
 	float mostRight = std::max({ nearTopLeft.x, farTopLeft.x, nearTopRight.x, farTopRight.x,
-		nearBottomLeft.x, farBottomLeft.x, nearBottomRight.x, farBottomRight.x, }) / 32.0f;
+		nearBottomLeft.x, farBottomLeft.x, nearBottomRight.x, farBottomRight.x, }) / chunkDimf;
 	float mostHigh = std::max({ nearTopLeft.y, farTopLeft.y, nearTopRight.y, farTopRight.y,
-		nearBottomLeft.y, farBottomLeft.y, nearBottomRight.y, farBottomRight.y, }) / 32.0f;
+		nearBottomLeft.y, farBottomLeft.y, nearBottomRight.y, farBottomRight.y, }) / chunkDimf;
 	float mostLow = std::min({ nearTopLeft.y, farTopLeft.y, nearTopRight.y, farTopRight.y,
-		nearBottomLeft.y, farBottomLeft.y, nearBottomRight.y, farBottomRight.y, }) / 32.0f;
+		nearBottomLeft.y, farBottomLeft.y, nearBottomRight.y, farBottomRight.y, }) / chunkDimf;
 	float mostFar = std::max({ nearTopLeft.z, farTopLeft.z, nearTopRight.z, farTopRight.z,
-		nearBottomLeft.z, farBottomLeft.z, nearBottomRight.z, farBottomRight.z, }) / 32.0f;
+		nearBottomLeft.z, farBottomLeft.z, nearBottomRight.z, farBottomRight.z, }) / chunkDimf;
 	float mostClose = std::min({ nearTopLeft.z, farTopLeft.z, nearTopRight.z, farTopRight.z,
-		nearBottomLeft.z, farBottomLeft.z, nearBottomRight.z, farBottomRight.z, }) / 32.0f;
+		nearBottomLeft.z, farBottomLeft.z, nearBottomRight.z, farBottomRight.z, }) / chunkDimf;
 	
 
 	

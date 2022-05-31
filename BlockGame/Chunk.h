@@ -17,7 +17,7 @@ enum ChunkState {
 
 class Chunk
 {
-	static const int CHUNK_DIMENSION = 32;
+	static const int CHUNK_DIMENSION = 64;
 	const int chunkSize = CHUNK_DIMENSION * CHUNK_DIMENSION * CHUNK_DIMENSION;
 
 	static BlockType* blockTypes;
