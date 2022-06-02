@@ -1,7 +1,7 @@
 #pragma once
 #include <thread>
+#include "ChunkThreadJob.h"
 
-struct ChunkThreadJob;
 class ChunkLoader;
 class Chunk;
 
@@ -10,6 +10,7 @@ struct ChunkThread
 	std::thread thread;
 	bool available;
 	bool terminate;
+	ChunkJob currentJob;
 	Chunk* processedChunk;
 };
 

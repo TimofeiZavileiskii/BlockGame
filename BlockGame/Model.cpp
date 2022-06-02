@@ -7,8 +7,6 @@ Model::Model(VAO* vao, EBO* ebo, glm::vec3 inPos)
 	position = inPos;
 	vertexAttributes = vao;
 	indicies = ebo;
-
-	
 }
 
 Model::~Model() 

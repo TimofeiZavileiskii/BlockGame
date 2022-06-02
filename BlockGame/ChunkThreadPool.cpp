@@ -29,9 +29,17 @@ void ChunkThreadPool::StartLoop(int number)
 	{
 		if (threads[number].processedChunk != nullptr) 
 		{
-			threads[number].processedChunk->GenerateTerrain();
-			threads[number].processedChunk->GenerateChunkMesh();
+			if(threads[number].currentJob == GENERATE_TERRAIN)
+			{
+				threads[number].processedChunk->GenerateTerrain();
+			}
+			else if (threads[number].currentJob == GENERATE_MODEL) 
+			{
+				threads[number].processedChunk->GenerateChunkMesh();
+			}
+
 			threads[number].processedChunk = nullptr;
+			threads[number].currentJob = NONE;
 			threads[number].available = true;
 		}
 		std::this_thread::sleep_for(std::chrono::milliseconds(10));
@@ -43,7 +51,7 @@ ChunkThreadPool::ChunkThreadPool(ChunkLoader* inChunkLoader)
 	chunkLoader = inChunkLoader;
 
 	for (int i = 0; i < threadNumber; i++) {
-		threads[i] = ChunkThread{std::thread(&ChunkThreadPool::StartLoop, this, i), true, false, nullptr};
+		threads[i] = ChunkThread{std::thread(&ChunkThreadPool::StartLoop, this, i), true, false, NONE, nullptr};
 	}
 }
 
@@ -63,8 +71,15 @@ bool ChunkThreadPool::AddJob(ChunkThreadJob job)
 	if (availableNum != -1)
 	{
 		threads[availableNum].available = false;
-		processedChunk->StartProccessing();
+		threads[availableNum].currentJob = job.job;
+		if (job.job == GENERATE_TERRAIN) {
+			processedChunk->StartProccessingTerrain();
+		}
+		else if (job.job == GENERATE_MODEL) {
+			processedChunk->StartProccessingModel();
+		}
 		threads[availableNum].processedChunk = processedChunk;
+		return true;
 	}
 	else
 	{

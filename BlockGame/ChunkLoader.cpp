@@ -25,6 +25,11 @@ bool ChunkLoader::IsInside(glm::vec3 normal, glm::vec3 normalOrigin, glm::vec3 c
 	return outside < 8;
 }
 
+void ChunkLoader::GenerateChunkTerrain(Coordinates coords)
+{
+
+}
+
 bool ChunkLoader::ChunkExists(Coordinates coords)
 {
 	return chunks.find(coords) != chunks.end();
@@ -56,7 +61,6 @@ void ChunkLoader::Update()
 		for (int ii = -chunkGenRadious; ii < chunkGenRadious + 1; ii++)
 			for (int iii = -chunkGenRadious; iii < chunkGenRadious + 1; iii++)
 				GenerateChunk(Coordinates(currentChunkPos.x + i, currentChunkPos.y + iii, currentChunkPos.z + ii));
-	//std::cout << CountWorkingThreads() << "\n";
 
 	for(const auto& [key, value] : chunks) 
 	{
@@ -64,11 +68,24 @@ void ChunkLoader::Update()
 	}
 }
 
+void ChunkLoader::GenerateTerrain(Coordinates coords)
+{
+	Chunk* chunk = GetChunk(coords);
+
+	if (chunk == nullptr) {
+		chunk = new Chunk(coords, atlas, this);
+	}
+
+	if (chunk->GetState() == UNROCESSED) {
+		threadPool->AddJob(ChunkThreadJob(coords, GENERATE_TERRAIN));
+	}
+}
+
 std::vector<Model*>& ChunkLoader::GetChunkModels(Camera* camera)
 {
 	chunkModels.clear();
 	
-	const float degreeToRadians = 3.1415926f / 180.0f;
+	const float degreeToRadians = 3.1415926f / 180.0f;  //pi/180 degrees
 	float chunkDim = Chunk::GetChunkDim();
 
 	glm::vec3 pos = camera->GetPosition();
@@ -78,6 +95,7 @@ std::vector<Model*>& ChunkLoader::GetChunkModels(Camera* camera)
 	float distance = camera->GetViewDistance();
 	float near = camera->GetNearDistance();
 
+	//Here find the dimensions of the view frustrum
 	glm::vec3 nearCenter = pos + dir * near;
 	glm::vec3 farCenter = pos + dir * distance;
 
@@ -100,6 +118,7 @@ std::vector<Model*>& ChunkLoader::GetChunkModels(Camera* camera)
 	glm::vec3 nearBottomLeft = nearCenter - camUp * (nearHeight * 0.5f) - camRight * (nearWidth * 0.5f);
 	glm::vec3 nearBottomRight = nearCenter - camUp * (nearHeight * 0.5f) + camRight * (nearWidth * 0.5f);
 	
+	//Calculate the norms of the planes which form the frustrum
 	glm::vec3 normLeft = glm::cross(nearTopLeft - farTopLeft, farBottomLeft - farTopLeft);
 	glm::vec3 normRight = glm::cross(farBottomRight - farTopRight, nearTopRight - farTopRight);
 
@@ -126,7 +145,7 @@ std::vector<Model*>& ChunkLoader::GetChunkModels(Camera* camera)
 		nearBottomLeft.z, farBottomLeft.z, nearBottomRight.z, farBottomRight.z, }) / chunkDimf;
 	
 
-	
+	//Here do the clipping - check that every corner of chunk cube is inside the view frustrum
 	for (int i = (int)floor(mostLeft); i < (int)ceil(mostRight); i++) 
 		for (int ii = (int)floor(mostLow); ii < (int)ceil(mostHigh); ii++)
 			for (int iii = (int)floor(mostClose); iii < (int)ceil(mostFar); iii++)
@@ -139,29 +158,6 @@ std::vector<Model*>& ChunkLoader::GetChunkModels(Camera* camera)
 						chunkModels.push_back(GetChunk(i, ii, iii)->GetChunkModel());
 					}
 
-	//std::cout << "Chunks clipped " << clipped << "\n";
-	/*
- 	for (const std::pair<Coordinates, Chunk*>& chunkPair : chunks)
-	{
-		int i = chunkPair.second->GetCoordinates().x;
-		int ii = chunkPair.second->GetCoordinates().y;
-		int iii = chunkPair.second->GetCoordinates().z;
-		if (IsInside(normLeft, farTopLeft, glm::vec3(i, ii, iii))
-			&& IsInside(normRight, farTopRight, glm::vec3(i, ii, iii))
-			&& IsInside(normUp, farTopLeft, glm::vec3(i, ii, iii))
-			&& IsInside(normDown, farBottomLeft, glm::vec3(i, ii, iii))
-			&& IsInside(normFront, farBottomLeft, glm::vec3(i, ii, iii))
-			&& IsInside(normBack, normBack, glm::vec3(i, ii, iii)))
-		{
-			chunkModels.push_back(chunkPair.second->GetChunkModel());
-		}
-			else 
-			{
-				clipped++;
-			}
-
-	}*/
-	//std::cout << "Clipped:" << clipped << " chunks\n";
 	return chunkModels;
 }
 
@@ -200,19 +196,33 @@ BlockTextureAtlas* ChunkLoader::GetTextureAtlas()
 bool ChunkLoader::GenerateChunk(Coordinates coords)
 {
 	bool output = false;
-	if (output = chunks.find(coords) == chunks.end())
-	{
-		chunks[coords] = new Chunk(coords, atlas, this);
-		ChunkThreadJob job = ChunkThreadJob(coords, GENERATE_TERRAIN);
-		threadPool->AddJob(job);
-	}
-	else if (chunks[coords]->GetState() == UNROCESSED) {
-		ChunkThreadJob job = ChunkThreadJob(coords, GENERATE_TERRAIN);
-		threadPool->AddJob(job);
-	}
-	else if (chunks[coords]->GetState() == MODEL_GENERATED) {
-		chunks[coords]->FiniliseMesh();
-	}
+	bool canMesh = true;
 	
+	for (int i = -1; i <= 1; i++)
+		for (int ii = -1; ii <= 1; ii++)
+			for (int iii = -1; iii <= 1; iii++) 
+			{
+				Coordinates currentCoords = Coordinates(coords.x + i, coords.y + ii, coords.z + iii);
+				Chunk* currentChunk = GetChunk(currentCoords);
+				
+				if (currentChunk == nullptr) {
+					chunks[currentCoords] = new Chunk(currentCoords, atlas, this);
+				}
+				if (chunks[currentCoords]->GetState() < TERRAIN_GENERATED) {
+					GenerateTerrain(currentCoords);
+					canMesh = false;
+				}
+			}
+
+	if (canMesh) {
+		if (chunks[coords]->GetState() == TERRAIN_GENERATED) {
+			ChunkThreadJob job = ChunkThreadJob(coords, GENERATE_MODEL);
+			threadPool->AddJob(job);
+		}
+		else if (chunks[coords]->GetState() == MODEL_GENERATED) {
+			chunks[coords]->FiniliseMesh();
+		}
+	}
+
 	return output;
 }

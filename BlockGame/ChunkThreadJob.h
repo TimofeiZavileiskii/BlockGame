@@ -3,6 +3,7 @@
 
 enum ChunkJob
 {
+	NONE,
 	GENERATE_TERRAIN,
 	GENERATE_MODEL
 };

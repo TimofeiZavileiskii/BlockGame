@@ -23,6 +23,8 @@ class ChunkLoader
 private:
 	bool IsInside(glm::vec3 normal, glm::vec3 normalOrigin, glm::vec3 chunkPos);
 
+	void GenerateChunkTerrain(Coordinates coords);
+
 public:
 	bool ChunkExists(Coordinates coords);
 
@@ -31,6 +33,8 @@ public:
 	ChunkLoader(BlockTextureAtlas* atlas, Entity* observer);
 
 	void Update();
+
+	void GenerateTerrain(Coordinates coords);
 
 	std::vector<Model*>& GetChunkModels(Camera* camera);
 

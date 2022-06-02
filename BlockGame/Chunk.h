@@ -10,7 +10,9 @@ class CubeMeshCreator;
 
 enum ChunkState {
 	UNROCESSED,
-	WORKED_ON,
+	TERRAIN_WORKED_ON,
+	TERRAIN_GENERATED,
+	MODEL_WORKED_ON,
 	MODEL_GENERATED,
 	FINISHED
 };
@@ -46,6 +48,8 @@ public:
 
 	Block* GetBlock(Coordinates coords);
 
+	Block* GetBlock(int x, int y, int z);
+
 	Chunk(Coordinates coord, BlockTextureAtlas* atlas, ChunkLoader* chunkLoader);
 
 	Chunk(int x, int y, int z, BlockTextureAtlas* atlas, ChunkLoader* chunkLoader);
@@ -58,13 +62,11 @@ public:
 
 	static int GetChunkDim();
 
-	bool IsUnprocessed();
-
-	bool NeedsFinilisation();
-
 	ChunkState GetState();
 
-	void StartProccessing();
+	void StartProccessingTerrain();
+
+	void StartProccessingModel();
 
 	Coordinates GetCoordinates();
 };
