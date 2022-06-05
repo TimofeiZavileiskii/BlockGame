@@ -28,7 +28,8 @@ class Chunk
 	BlockTextureAtlas* atlas;
 	ChunkLoader* chunkLoader;
 	CubeMeshCreator* meshCreator;
-
+	
+	int worldSeed;
 	ChunkState state;
 
 	Coordinates coordinates;
@@ -50,9 +51,9 @@ public:
 
 	Block* GetBlock(int x, int y, int z);
 
-	Chunk(Coordinates coord, BlockTextureAtlas* atlas, ChunkLoader* chunkLoader);
+	Chunk(Coordinates coord, BlockTextureAtlas* atlas, ChunkLoader* chunkLoader, int worldSeed);
 
-	Chunk(int x, int y, int z, BlockTextureAtlas* atlas, ChunkLoader* chunkLoader);
+	Chunk(int x, int y, int z, BlockTextureAtlas* atlas, ChunkLoader* chunkLoader, int worldSeed);
 
 	~Chunk();
 

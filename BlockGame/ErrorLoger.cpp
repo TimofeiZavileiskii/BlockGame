@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "ErrorLoger.h"
-#include <iostream>
 
 ErrorLoger* ErrorLoger::errorLoger = nullptr;
 

@@ -23,12 +23,15 @@ void World::UpdateCamera()
 		camera->Strafe(-window->GetTime());
 }
 
-World::World(Window* inWindow, BlockTextureAtlas* atlas)
+World::World(Window* inWindow, BlockTextureAtlas* atlas, int worldSeed)
 {
 	window = inWindow;
+	this->worldSeed = worldSeed;
+
 	camera = new Camera(glm::vec3(5.0f, 20.0f, 10.0f), glm::vec2(0.0f, 20.0f), 90.0f, window->GetAspectRation());
-	chunkLoader = new ChunkLoader(atlas, (Entity*)camera);
+	chunkLoader = new ChunkLoader(atlas, (Entity*)camera, worldSeed);
 	chunkLoader->GenerateChunk(0, 0, 0);
+
 
 	Update();
 }

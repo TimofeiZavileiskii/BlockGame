@@ -5,6 +5,7 @@
 #include "Noise.h"
 #include "ChunkLoader.h"
 #include "Coordinates.h"
+#include "LehmersRng.h"
 #include <iostream>
 
 BlockType* Chunk::blockTypes;
@@ -12,16 +13,32 @@ BlockType* Chunk::blockTypes;
 void Chunk::GenerateTerrain()
 {
 	blocks = new Block[chunkSize];
-	Noise noise = Noise();
+	Noise noise = Noise(worldSeed);
+
+	LehmersRng rng = LehmersRng(worldSeed);
+	float tempOffsetX = rng.intRandom() >> 5;
+	float tempOffsetZ = rng.intRandom() >> 5;
+	float humOffsetX = rng.intRandom() >> 5;
+	float humOffsetZ = rng.intRandom() >> 5;
 
 	for (int i = 0; i < CHUNK_DIMENSION; i++) {
-		for (int ii = 0; ii < CHUNK_DIMENSION; ii++) {
-			for (int iii = 0; iii < CHUNK_DIMENSION; iii++) {
+		for (int iii = 0; iii < CHUNK_DIMENSION; iii++) {
+
+			int realX = i + coordinates.x * CHUNK_DIMENSION;
+			int realZ = iii + coordinates.z * CHUNK_DIMENSION;
+
+			float nVal = noise.SampleOctaves(realX * 0.0003f, realZ * 0.0003f, 15, 0.5f);
+			float surface = 1000.0f * std::pow(std::abs(nVal), 1.5f);
+			if (nVal < 0) {
+				surface = -surface;
+			}
+
+			float temperature = noise.SampleOctaves(realX * 0.0005f + tempOffsetX, realZ * 0.0005f + tempOffsetZ, 4, 0.5f);
+			float humidity = noise.SampleOctaves(realX * 0.0005f + humOffsetX, realZ * 0.0005f + humOffsetZ, 4, 0.5f);
+
+			for (int ii = 0; ii < CHUNK_DIMENSION; ii++) {
+
 				int height = ii + CHUNK_DIMENSION * coordinates.y;
-				int realX = i + coordinates.x * CHUNK_DIMENSION;
-				int realZ = iii + coordinates.z * CHUNK_DIMENSION;
-				
-				float surface = 20.0f * noise.Sample(realX * 0.03f + 0.08f, realZ * 0.03f + 0.08f);
 
 				if (height < surface){
 					blocks[GetArrayPos(i, ii, iii)] = Block(&blockTypes[STONE]);
@@ -71,12 +88,16 @@ void Chunk::AssignBlockTypes()
 {
 	blockTypes = new BlockType[BLOCK_ID_LENGTH];
 
-	blockTypes[AIR] = BlockType(true, "");
+	blockTypes[AIR]   = BlockType(true, "");
 	blockTypes[STONE] = BlockType(false, "Stone");
-	blockTypes[SAND] = BlockType(false, "Sand");
-	blockTypes[DIRT] = BlockType(false, "Dirt");
+	blockTypes[SAND]  = BlockType(false, "Sand");
+	blockTypes[DIRT]  = BlockType(false, "Dirt");
 	blockTypes[BRICK] = BlockType(false, "Bricks");
 	blockTypes[GRASS] = BlockType(false, "Grass");
+	blockTypes[COBLESTONE] = BlockType(false, "Coblestone");
+	blockTypes[SANDSTONE] = BlockType(false, "Sandstone");
+	blockTypes[DIRT_JUNGLE] = BlockType(false, "DirtJungle");
+	blockTypes[GRASS_JUNGLE] = BlockType(false, "GrassJungle");
 }
 
 void Chunk::StartProccessingTerrain()
@@ -99,9 +120,6 @@ void Chunk::GenerateChunkMesh()
 	for (int i = 0; i < CHUNK_DIMENSION; i++)
 		for (int ii = 0; ii < CHUNK_DIMENSION; ii++)
 			for (int iii = 0; iii < CHUNK_DIMENSION; iii++){
-				if (coordinates.x == 0 && coordinates.y == 0 && coordinates.z == 0 && i == 0 && ii == 0 && iii == 30) {
-					std::cout << "Here" << "\n";
-				}
 				if (!blocks[GetArrayPos(i, ii, iii)].GetTransperency())
 				{
 					int arrayPos = GetArrayPos(i, ii, iii);
@@ -195,14 +213,15 @@ inline int Chunk::GetArrayPos(Coordinates coord)
 	return GetArrayPos(coord.x, coord.y, coord.z);
 }
 
-Chunk::Chunk(int inX, int inY, int inZ, BlockTextureAtlas* atlas, ChunkLoader* chunkLoader)
+Chunk::Chunk(int inX, int inY, int inZ, BlockTextureAtlas* atlas, ChunkLoader* chunkLoader, int worldSeed)
 {
-	Chunk(Coordinates(inX, inY, inZ), atlas, chunkLoader);
+	Chunk(Coordinates(inX, inY, inZ), atlas, chunkLoader, worldSeed);
 }
 
-Chunk::Chunk(Coordinates coord, BlockTextureAtlas* atlas, ChunkLoader* chunkLoader)
+Chunk::Chunk(Coordinates coord, BlockTextureAtlas* atlas, ChunkLoader* chunkLoader, int worldSeed)
 {
 	coordinates = coord;
+	this->worldSeed = worldSeed;
 	this->atlas = atlas;
 	if (blockTypes == nullptr)
 	{

@@ -1,8 +1,8 @@
 #pragma once
-#include "Renderer.h"
-#include "Window.h"
-#include "World.h"
-#include <iostream>
+
+class Window;
+class World;
+class Renderer;
 
 class Game
 {
@@ -15,52 +15,11 @@ private:
 	int fpsCounter;
 	double passedTime;
 
-	void Loop() 
-	{
-		while (!end)
-		{
-			window->ProcessEvents();
-			
-			world->Update();
-			renderer->Draw(world->GetCamera(), world->GetChunkModels());
-
-			window->Update();
-
-			if (window->GetInput(ESC))
-			{
-				end = true;
-			}
-
-			fpsCounter++;
-			passedTime += window->GetTime();
-			if (passedTime > 1.0f)
-			{
-				std::cout << "FPS: " << fpsCounter << "\n";
-				passedTime = 0.0f;
-				fpsCounter = 0;
-			}
-		}
-	}
+	void Loop();
 
 public:
-	Game() 
-	{
-		end = false;
-		fpsCounter = 0;
-		passedTime = 0.0f;
-		int width = 1000;
-		int height = 850;
+	Game();
 
-		window = new Window(width, height, "Game");
-		renderer = new Renderer(width, height);
-		world = new World(window, renderer->GetAtlas());
-	}
-
-	void StartLoop() 
-	{
-		end = false;
-
-		Loop();
-	}
+	void StartLoop();
 };
 

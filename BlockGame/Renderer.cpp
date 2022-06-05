@@ -28,7 +28,7 @@ Renderer::Renderer(int inWidth, int inHeight)
     glClearColor(0.65f, 0.90f, 1.0f, 1.0f);
     glEnable(GL_DEPTH_TEST);
 
-    //glEnable(GL_CULL_FACE);
+    glEnable(GL_CULL_FACE);
 
     dataManager = new DataManager();
 }

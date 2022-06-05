@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Noise.h"
 
-
 const int Noise::randomArray[] = 
 		{ 151, 160, 137, 91, 90, 15,	   //A randomly arranged array of numbers from 0-255 repeated.
 		131, 13, 201, 95, 96, 53, 194, 233, 7, 225, 140, 36, 103, 30, 69, 142, 8, 99, 37, 240, 21, 10, 23,
@@ -61,10 +60,18 @@ float Noise::gradient(float x, float y, int hash){
 	return output;
 }
 
+Noise::Noise(int worldSeed)
+{
+	this->worldSeed = worldSeed;
+}
+
 float Noise::Sample(float x, float y)
 {
-	int squareX = (int)floor(x) & 255;
-	int squareY = (int)floor(y) & 255;
+	int xOffset = randomArray[worldSeed & 255];
+	int yOffset = randomArray[(worldSeed + 1) & 255];
+
+	int squareX = ((int)floor(x) + xOffset) & 255;
+	int squareY = ((int)floor(y) + yOffset) & 255;
 
 	float distX = x - floor(x);
 	float distY = y - floor(y);

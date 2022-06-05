@@ -16,7 +16,7 @@ Camera::Camera(glm::vec3 inPosition, glm::vec2 inRotation, float inFov, float in
 {
 	fov = inFov;
     aspectRatio = inAspectRatio;
-    speed = 20.00f;
+    speed = 100.00f;
     viewDistance = 500.0f;
     nearDistance = 0.1f;
 

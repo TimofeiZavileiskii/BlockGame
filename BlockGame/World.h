@@ -16,13 +16,14 @@ private:
 	Window* window;
 	Camera* camera;
 	ChunkLoader* chunkLoader;
+	int worldSeed;
 
 	double passedTime;
 
 	void UpdateCamera();
 
 public:
-	World(Window* inWindow, BlockTextureAtlas* atlas);
+	World(Window* inWindow, BlockTextureAtlas* atlas, int worldSeed);
 
 	void Update();
 

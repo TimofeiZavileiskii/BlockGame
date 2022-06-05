@@ -5,6 +5,7 @@
 #include <map>
 #include <iostream>
 #include <algorithm>
+#include <cmath>
 
 //Glm headers
 #include <glm/vec2.hpp>

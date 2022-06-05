@@ -2,8 +2,11 @@
 
 class Noise
 {
+	//Noise class based on the Perlin Noise algorithm
 	static const int arrSize = 512;
 	static const int randomArray[arrSize];
+
+	int worldSeed;
 
 	float fade(float x);
 
@@ -13,7 +16,7 @@ class Noise
 
 
 public:
-	Noise() { }
+	Noise(int worldSeed);
 
 	float Sample(float x, float y);
 

@@ -40,8 +40,9 @@ bool ChunkLoader::ChunkExists(int x, int y, int z)
 	return ChunkExists(Coordinates(x, y, z));
 }
 
-ChunkLoader::ChunkLoader(BlockTextureAtlas* atlas, Entity* observer)
+ChunkLoader::ChunkLoader(BlockTextureAtlas* atlas, Entity* observer, int worldSeed)
 {
+	this->worldSeed = worldSeed;
 	chunks = std::map<Coordinates, Chunk*>();
 	chunkModels = std::vector<Model*>();
 	this->atlas = atlas;
@@ -73,7 +74,7 @@ void ChunkLoader::GenerateTerrain(Coordinates coords)
 	Chunk* chunk = GetChunk(coords);
 
 	if (chunk == nullptr) {
-		chunk = new Chunk(coords, atlas, this);
+		chunk = new Chunk(coords, atlas, this, worldSeed);
 	}
 
 	if (chunk->GetState() == UNROCESSED) {
@@ -206,7 +207,7 @@ bool ChunkLoader::GenerateChunk(Coordinates coords)
 				Chunk* currentChunk = GetChunk(currentCoords);
 				
 				if (currentChunk == nullptr) {
-					chunks[currentCoords] = new Chunk(currentCoords, atlas, this);
+					chunks[currentCoords] = new Chunk(currentCoords, atlas, this, worldSeed);
 				}
 				if (chunks[currentCoords]->GetState() < TERRAIN_GENERATED) {
 					GenerateTerrain(currentCoords);

@@ -19,6 +19,7 @@ class ChunkLoader
 	BlockTextureAtlas* atlas;
 	Entity* observer;
 	ChunkThreadPool* threadPool;
+	int worldSeed;
 
 private:
 	bool IsInside(glm::vec3 normal, glm::vec3 normalOrigin, glm::vec3 chunkPos);
@@ -30,7 +31,7 @@ public:
 
 	bool ChunkExists(int x, int y, int z);
 
-	ChunkLoader(BlockTextureAtlas* atlas, Entity* observer);
+	ChunkLoader(BlockTextureAtlas* atlas, Entity* observer, int worldSeed);
 
 	void Update();
 
