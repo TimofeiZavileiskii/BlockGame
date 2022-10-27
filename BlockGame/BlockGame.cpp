@@ -4,7 +4,7 @@
 
 int main()
 {
-    std::cout << "Program Starts!\n";
+    std::cout << "Program Startsssssssssss!\n";
 
     Game* game = new Game();
     game->StartLoop();
